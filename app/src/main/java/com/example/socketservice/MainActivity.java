@@ -10,9 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-//can the git hub see me //todo delete this line
-//hello world
-//TODO add android .hardware.location.gps to manifest?
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private SocketService socketService;
@@ -21,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Intent socketServiceIntent;
     private Boolean runDone;
 
-    //hello github
+
     //local gui variables
     private Button startBtn, stopBtn;
     private TextView printTv;
