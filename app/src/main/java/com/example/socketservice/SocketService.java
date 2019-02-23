@@ -19,8 +19,8 @@ import java.net.Socket;
 
 public class SocketService extends Service {
     //socket variables
-    public static final String SERVERIP = "10.13.78.162";//TODO insert pi or computer IP
-    public static final int SERVERPORT = 8010;
+    public static final String SERVERIP = "10.13.75.82";//TODO insert pi or computer IP
+    public static final int SERVERPORT = 8020;
     Socket socket;
      // InetAddress serverAddr; //todo remove?
     private BufferedReader reader = null;
@@ -34,7 +34,7 @@ public class SocketService extends Service {
     private double lon = 5678;
 
     //GPS variables
-    LocationTrack locationTrack = new LocationTrack(this);//TODO does this work with service context;
+    LocationTrack locationTrack = new LocationTrack(this);//TODO does this work with service context?;
 
     @Override
     public IBinder onBind(Intent intent) {
