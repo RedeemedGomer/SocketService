@@ -1,8 +1,11 @@
 package com.example.socketservice;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -34,9 +37,9 @@ public class SocketService extends Service {
     private double lon = 5678;
 
     //GPS variables
-    LocationTrack locationTrack;// = new LocationTrack(this);//TODO does this work with service context?;
+    LocationTrackService locationTrackServe;// = new LocationTrack(this);//TODO does this work with service context?;
+    LocationManager LocMan;
 
-    @Override
     public IBinder onBind(Intent intent) {
         System.out.println("I am in Ibinder onBind method");
         return mBinder;
@@ -51,10 +54,11 @@ public class SocketService extends Service {
     @Override
     public int onStartCommand(Intent intent,int flags, int startId){
         super.onStartCommand(intent, flags, startId);//todo is this even needed?
+        System.out.println("onStartCommand");
         Log.i("S_update", "onStartCommand");
 //        Runnable connect = new connectSocket();
 //        new Thread(connect).start();
-        LocationTrack locationTrack = new LocationTrack(this);
+        locationTrackServe = new LocationTrackService(getApplicationContext());
         return START_STICKY;
     }
 
@@ -93,8 +97,8 @@ public class SocketService extends Service {
 
             //TODO concept test, delete when used
             serverSays = readMessage();
-            lat = locationTrack.getLatitude();
-            lon = locationTrack.getLongitude();
+            lat = locationTrackServe.getLatitude();
+            lon = locationTrackServe.getLongitude();
             String messageToSend = "Hi I am phone, my lat:"+lat+",  my lon:"+ lon +"\n";
             sendMessage(messageToSend);
             runDone = true;
@@ -107,7 +111,7 @@ public class SocketService extends Service {
     }
      public void sendMessage(String message){
         if (writer != null) {
-            Log.d("S_Error","sendMessage"+message);
+            Log.i("S_update","sendMessage"+message);
             try {
                 writer.write(message.getBytes());
             } catch (IOException e) {
@@ -120,16 +124,16 @@ public class SocketService extends Service {
         }
     }
 
-    public String getLatLon(){
+    public String getLatLonString(){
         Log.i("S_update", "in getLatLon()");
-        return "Lat:"+locationTrack.getLatitude()+",  Lon:"+locationTrack.getLongitude()+".\n";
+        return "Lat:"+locationTrackServe.getLatitude()+",  Lon:"+locationTrackServe.getLongitude()+".\n";
     }
 
 
      public String readMessage(){
         String message = "";
         if (reader != null) {
-            Log.i("S_info","in sendMessage"+message);
+            Log.i("S_info","in readMessage"+message);
             try {
                 message = reader.readLine();
                 Log.i("S_info", "message read:"+message);
@@ -146,14 +150,16 @@ public class SocketService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        try {
-            socket.close();
-        } catch (Exception e) {
-            Log.e("S_error","Error closing server", e);
-            e.printStackTrace();
-        }
-        socket = null;
+//        super.onDestroy();
+//        try {
+//            socket.close();
+//        } catch (Exception e) {
+//            Log.e("S_error","Error closing server", e);
+//            e.printStackTrace();
+//        }
+//        socket = null;
+
+        Log.i("S_update", "onDestroy()");
     }
 
     @Override

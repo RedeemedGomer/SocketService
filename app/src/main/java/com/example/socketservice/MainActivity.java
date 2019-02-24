@@ -1,12 +1,15 @@
 package com.example.socketservice;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     //local gui variables
-    private Button startBtn, stopBtn, updateBtn;
+    private Button startBtn, stopBtn, updateBtn, bindBtn;
     private TextView printTv;
 
     @Override
@@ -33,12 +36,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startBtn = (Button) findViewById(R.id.startBtn);
         stopBtn = (Button)  findViewById(R.id.stopBtn);
         updateBtn = (Button)  findViewById(R.id.updateBtn);
+        bindBtn = (Button) findViewById(R.id.bindBtn);
         printTv = (TextView) findViewById(R.id.printTV);
 
         //send all onClicks to local switch statement
         startBtn.setOnClickListener(this);
         stopBtn.setOnClickListener(this);
         updateBtn.setOnClickListener(this);
+        bindBtn.setOnClickListener(this);
 
         socketServiceIntent = new Intent(this, SocketService.class);
     }
@@ -48,11 +53,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view){
         switch (view.getId()){
             case R.id.startBtn:
+                //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 startService(socketServiceIntent);
+                printTv.setText("Service started");
+                break;
+
+            case R.id.bindBtn:
                 bindService();
-                if(isServiceBound) {
-                    String gps = socketService.getLatLon();
-                    printTv.setText(gps);
+                if(isServiceBound){
+                    printTv.setText("Service Bound");
+                }else{
+                    printTv.setText("Service Not Bound");
                 }
                 break;
 
@@ -62,21 +73,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     stopService(socketServiceIntent);
                     printTv.setText("Service Stopped");
                 } else {
-                    printTv.setText("Service Not Bound");
+                    printTv.setText("stop:Service Not Bound");
                 }
                 break;
 
             case R.id.updateBtn:
                 if(isServiceBound) {
-                    printTv.setText(socketService.getLatLon());
+                    printTv.setText(socketService.getLatLonString());
                 } else {
-                    printTv.setText("Service Not Bound");
+                    printTv.setText("update:Service Not Bound");
                 }
                 break;
         }
     }
 
     private void bindService(){
+        Log.i("MA_inf", "BindService()");
         if(socketServiceConnection == null){
             socketServiceConnection = new ServiceConnection() {
                 @Override
@@ -84,10 +96,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SocketService.myBinder myBinder = (SocketService.myBinder)serviceBinder;
                     socketService = ((SocketService.myBinder) serviceBinder).getService();
                     isServiceBound = true;
+                    Log.i("MA_inf", "bindservice.onServiceConnected");
                 }
 
                 @Override
                 public void onServiceDisconnected(ComponentName name) {
+                    Log.i("MA_inf", "bindservice.onServiceDisconnected");
                     isServiceBound = false;
                 }
             };
