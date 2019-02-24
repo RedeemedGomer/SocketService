@@ -34,7 +34,7 @@ public class SocketService extends Service {
     private double lon = 5678;
 
     //GPS variables
-    LocationTrack locationTrack = new LocationTrack(this);//TODO does this work with service context?;
+    LocationTrack locationTrack;// = new LocationTrack(this);//TODO does this work with service context?;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -51,16 +51,16 @@ public class SocketService extends Service {
     @Override
     public int onStartCommand(Intent intent,int flags, int startId){
         super.onStartCommand(intent, flags, startId);//todo is this even needed?
-        Log.i("Serv.inf", "onStartCommand");
-        Runnable connect = new connectSocket();
-        new Thread(connect).start();
+        Log.i("S_update", "onStartCommand");
+//        Runnable connect = new connectSocket();
+//        new Thread(connect).start();
+        LocationTrack locationTrack = new LocationTrack(this);
         return START_STICKY;
     }
 
     public String serverSaysWhat(){
         return serverSays;
     }
-
 
 
     class connectSocket implements Runnable {
@@ -121,8 +121,11 @@ public class SocketService extends Service {
     }
 
     public String getLatLon(){
-        return "Lat:"+lat+",  Lon:"+lon+".\n";
+        Log.i("S_update", "in getLatLon()");
+        return "Lat:"+locationTrack.getLatitude()+",  Lon:"+locationTrack.getLongitude()+".\n";
     }
+
+
      public String readMessage(){
         String message = "";
         if (reader != null) {
