@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private SocketService socketService;
-    private boolean isServiceBound = false;
+    private Boolean isServiceBound = false;
     private ServiceConnection socketServiceConnection;
     private Intent socketServiceIntent;
     private Boolean runDone;
@@ -59,11 +59,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.bindBtn:
-                bindService();
                 if(isServiceBound){
                     printTv.setText("Service Bound");
                 }else{
-                    printTv.setText("Service Not Bound");
+                    bindService();
+                    printTv.setText("Service Not Bound, bounding initiated");
                 }
                 break;
 
@@ -105,9 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     isServiceBound = false;
                 }
             };
-
-            bindService(socketServiceIntent, socketServiceConnection, Context.BIND_AUTO_CREATE);//TODO check if bind auto create is what I actually want
         }
+        bindService(socketServiceIntent, socketServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     private void unbindService(){

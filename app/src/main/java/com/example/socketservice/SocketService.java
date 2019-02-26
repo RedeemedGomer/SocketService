@@ -33,6 +33,7 @@ public class SocketService extends Service {
     //Service Variables
     private IBinder mBinder = new myBinder();
     private Boolean runDone = false;
+    private Boolean isBound = false;
     private double lat = 1234;
     private double lon = 5678;
 
@@ -42,7 +43,15 @@ public class SocketService extends Service {
 
     public IBinder onBind(Intent intent) {
         System.out.println("I am in Ibinder onBind method");
+        isBound = true;
         return mBinder;
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        System.out.println("I am in Ibinder onRebind method");
+        isBound = true;
+        super.onRebind(intent);
     }
 
     public class myBinder extends Binder {
@@ -127,6 +136,10 @@ public class SocketService extends Service {
     public String getLatLonString(){
         Log.i("S_update", "in getLatLon()");
         return "Lat:"+locationTrackServe.getLatitude()+",  Lon:"+locationTrackServe.getLongitude()+".\n";
+    }
+
+    public Boolean getIsBound(){
+        return isBound;
     }
 
 

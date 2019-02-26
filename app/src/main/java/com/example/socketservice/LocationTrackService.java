@@ -35,6 +35,7 @@ public class LocationTrackService extends Service implements LocationListener {
     double longitude;
 
 
+
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
 
 
@@ -113,6 +114,9 @@ public class LocationTrackService extends Service implements LocationListener {
 
         return loc;
     }
+
+
+
 
     public double getLongitude() {
         if (loc != null) {
