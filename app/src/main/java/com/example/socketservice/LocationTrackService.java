@@ -39,7 +39,7 @@ public class LocationTrackService extends Service implements LocationListener {
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
 
 
-    private static final long MIN_TIME_BW_UPDATES = 1000;//1000 * 60 * 1//todo make sure this is short enough
+    private static final long MIN_MILISECONDS_BW_UPDATES = 500;//1000 * 60 * 1//todo make sure this is short enough
     private LocationManager locationManager;
 
     public LocationTrackService(Context newContext) {
@@ -85,9 +85,10 @@ public class LocationTrackService extends Service implements LocationListener {
                     }
 
                     try {
+                        //this sets how many times OnLocationChanged() is called
                         locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
+                                MIN_MILISECONDS_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         if (locationManager != null) {
                             loc = locationManager
