@@ -38,7 +38,7 @@ public class SocketService extends Service {
     private double lon = 5678;
 
     //GPS variables
-    LocationTrackService locationTrackServe;// = new LocationTrack(this);//TODO does this work with service context?;
+    LocationTrackService locationTrackServe;//TODO does this work with service context?;
     LocationManager LocMan;
 
     public IBinder onBind(Intent intent) {
