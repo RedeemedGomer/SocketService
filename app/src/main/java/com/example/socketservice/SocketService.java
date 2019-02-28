@@ -22,8 +22,8 @@ import java.net.Socket;
 
 public class SocketService extends Service {
     //socket variables
-    public static final String SERVERIP = "10.13.75.82";//TODO insert pi or computer IP
-    public static final int SERVERPORT = 8020;
+    public static final String SERVERIP = "10.13.78.162";//TODO insert pi or computer IP
+    public static final int SERVERPORT = 8010;
     Socket socket;
      // InetAddress serverAddr; //todo remove?
     private BufferedReader reader = null;
@@ -63,11 +63,11 @@ public class SocketService extends Service {
     @Override
     public int onStartCommand(Intent intent,int flags, int startId){
         super.onStartCommand(intent, flags, startId);//todo is this even needed?
-        System.out.println("onStartCommand");
-        Log.i("S_update", "onStartCommand");
-//        Runnable connect = new connectSocket();
-//        new Thread(connect).start();
         locationTrackServe = new LocationTrackService(getApplicationContext());
+        Log.i("S_update", "onStartCommand");
+        Runnable connect = new connectSocket();
+        new Thread(connect).start();
+
         return START_STICKY;
     }
 
@@ -138,6 +138,15 @@ public class SocketService extends Service {
         return "Lat:"+locationTrackServe.getLatitude()+",  Lon:"+locationTrackServe.getLongitude()+".\n";
     }
 
+    public double getLat(){
+        if(locationTrackServe != null){
+            return locationTrackServe.getLatitude();
+        } else{
+            Log.d("S_debug", "LocationTrackServe was null");
+            return -1111;
+        }
+    }
+
     public Boolean getIsBound(){
         return isBound;
     }
@@ -163,16 +172,15 @@ public class SocketService extends Service {
 
     @Override
     public void onDestroy() {
-//        super.onDestroy();
-//        try {
-//            socket.close();
-//        } catch (Exception e) {
-//            Log.e("S_error","Error closing server", e);
-//            e.printStackTrace();
-//        }
-//        socket = null;
-
         Log.i("S_update", "onDestroy()");
+        super.onDestroy();
+       try {
+            socket.close();
+        } catch (Exception e) {
+            Log.e("S_error","Error closing server", e);
+            e.printStackTrace();
+        }
+        socket = null;
     }
 
     @Override
