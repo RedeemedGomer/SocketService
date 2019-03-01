@@ -66,8 +66,8 @@ public class SocketService extends Service {
 
         locationTrackServe = new LocationTrackService(getApplicationContext());
         Log.i("S_update", "onStartCommand");
-//        Runnable connect = new connectSocket();
-//        new Thread(connect).start();
+        Runnable connect = new connectSocket();
+        new Thread(connect).start();
 
         return START_STICKY;
     }
