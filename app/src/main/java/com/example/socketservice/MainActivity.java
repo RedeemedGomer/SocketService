@@ -21,10 +21,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ServiceConnection socketServiceConnection;
     private Intent socketServiceIntent;
     private Boolean runDone;
+    private Boolean isServiceStarted = false;
 
 
     //local gui variables
-    private Button startBtn, stopBtn, updateBtn, bindBtn;
+    private Button startBtn, cancelBtn, connectBtn, disconnectBtn;
     private TextView printTv, gpsTv;
 
     @Override
@@ -33,41 +34,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //initialize local gui vars
-        startBtn = (Button) findViewById(R.id.startBtn);
-        stopBtn = (Button)  findViewById(R.id.stopBtn);
-        updateBtn = (Button)  findViewById(R.id.updateBtn);
-        bindBtn = (Button) findViewById(R.id.bindBtn);
-        printTv = (TextView) findViewById(R.id.printTV);
-        gpsTv = (TextView)findViewById(R.id.gpsTextView);
+        startBtn = (Button) findViewById(R.id.startButton);
+        cancelBtn = (Button)  findViewById(R.id.cancelButton);
+        connectBtn = (Button)  findViewById(R.id.connectButton);
+        disconnectBtn = (Button) findViewById(R.id.disconnectButton);
+        printTv = (TextView) findViewById(R.id.debugTextView);
+        gpsTv = (TextView)findViewById(R.id.gps_ui_output);
 
         //send all onClicks to local switch statement
         startBtn.setOnClickListener(this);
-        stopBtn.setOnClickListener(this);
-        updateBtn.setOnClickListener(this);
-        bindBtn.setOnClickListener(this);
+        cancelBtn.setOnClickListener(this);
+        connectBtn.setOnClickListener(this);
+        disconnectBtn.setOnClickListener(this);
 
         socketServiceIntent = new Intent(this, SocketService.class);
 
-        Thread thread = new Thread() {
-
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateGpsTextView();
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
-                }
-            }
-        };
-
-        thread.start();
+//        Thread thread = new Thread() {
+//
+//            @Override
+//            public void run() {
+//                try {
+//                    while (!isInterrupted()) {
+//                        Thread.sleep(1000);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                updateGpsTextView();
+//                            }
+//                        });
+//                    }
+//                } catch (InterruptedException e) {
+//                }
+//            }
+//        };
+//
+//        thread.start();
 
     }
 
@@ -82,42 +83,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.startBtn:
+            case R.id.connectButton:
                 //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                startService(socketServiceIntent);
-                bindService();
-                printTv.setText("Service started");
+                if(isServiceStarted) {
+                    if (isServiceBound) {
+                        printTv.setText("Service already Bound");
+                    } else {
+                        //                    startService(socketServiceIntent);
+                        bindService();
+                        printTv.setText("Service wasn't bound, bounding initiated, check again");
+                    }
+                } else{
+                    startService(socketServiceIntent);
+                    bindService();
+                    isServiceStarted = true;
+                }
+
                 break;
 
-            case R.id.bindBtn:
+            case R.id.startButton:
                 if(isServiceBound){
-                    printTv.setText("Service Bound");
+                    String Message = socketService.getLatLonString();
+                    gpsTv.setText(Message);
                 }else{
-                    bindService();
-                    printTv.setText("Service wasn't bound, bounding initiated, check again");
+
+                    printTv.setText("start: Service wasn't bound");
                 }
                 break;
 
-            case R.id.stopBtn:
+            case R.id.cancelButton:
                 if(isServiceBound) {
                     unbindService();
-                    stopService(socketServiceIntent);
                     printTv.setText("Service Stopped");
                 } else {
-                    printTv.setText("stop:Service Not Bound");
+                    printTv.setText("cancel:Service Not Bound");
                 }
                 break;
 
-            case R.id.updateBtn:
+            case R.id.disconnectButton:
                 if(isServiceBound) {
-                    if(socketService.getRunDone()){
-                        String Message = socketService.serverSaysWhat();
-                        if(Message != null) {
-                            printTv.setText("Server Says" + Message);
-                        }else{
-                            printTv.setText("Server Say Null");
-                        }
-                    }
+//                    if(socketService.getRunDone()){
+//                        String Message = socketService.serverSaysWhat();
+//                        if(Message != null) {
+//                            printTv.setText("Server Says" + Message);
+//                        }else{
+//                            printTv.setText("Server Say Null");
+//                        }
+//                    }
+                    stopService(socketServiceIntent);
+                    isServiceStarted = false;
                 } else {
                     printTv.setText("update:Service Not Bound");
                 }

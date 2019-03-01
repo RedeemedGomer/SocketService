@@ -63,10 +63,11 @@ public class SocketService extends Service {
     @Override
     public int onStartCommand(Intent intent,int flags, int startId){
         super.onStartCommand(intent, flags, startId);//todo is this even needed?
+
         locationTrackServe = new LocationTrackService(getApplicationContext());
         Log.i("S_update", "onStartCommand");
-        Runnable connect = new connectSocket();
-        new Thread(connect).start();
+//        Runnable connect = new connectSocket();
+//        new Thread(connect).start();
 
         return START_STICKY;
     }
@@ -135,7 +136,12 @@ public class SocketService extends Service {
 
     public String getLatLonString(){
         Log.i("S_update", "in getLatLon()");
-        return "Lat:"+locationTrackServe.getLatitude()+",  Lon:"+locationTrackServe.getLongitude()+".\n";
+        if(locationTrackServe != null) {
+            return "Lat:" + locationTrackServe.getLatitude() + ",  Lon:" + locationTrackServe.getLongitude() + ".\n";
+        }else{
+            Log.d("S_debug", "LocationTrackServe was null");
+            return "Error LocationTracker is Null";
+        }
     }
 
     public double getLat(){
@@ -174,13 +180,16 @@ public class SocketService extends Service {
     public void onDestroy() {
         Log.i("S_update", "onDestroy()");
         super.onDestroy();
-       try {
-            socket.close();
-        } catch (Exception e) {
-            Log.e("S_error","Error closing server", e);
-            e.printStackTrace();
+
+        if(socket != null) {
+            try {
+                socket.close();
+            } catch (Exception e) {
+                Log.e("S_error","Error closing server", e);
+                e.printStackTrace();
+            }
+            socket = null;
         }
-        socket = null;
     }
 
     @Override
