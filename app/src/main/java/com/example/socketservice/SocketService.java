@@ -137,7 +137,7 @@ public class SocketService extends Service {
     public String getLatLonString(){
         Log.i("S_update", "in getLatLon()");
         if(locationTrackServe != null) {
-            return "Lat:" + locationTrackServe.getLatitude() + ",  Lon:" + locationTrackServe.getLongitude() + ".\n";
+            return "Lat:" + locationTrackServe.getLatitude() + ",  Lon:" + locationTrackServe.getLongitude();
         }else{
             Log.d("S_debug", "LocationTrackServe was null");
             return "Error LocationTracker is Null";

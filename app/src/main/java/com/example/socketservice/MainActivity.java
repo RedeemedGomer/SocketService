@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.cancelButton:
                 if(isServiceBound) {
                     unbindService();
-                    printTv.setText("Service Stopped");
+                    printTv.setText("Service unbound");
                 } else {
                     printTv.setText("cancel:Service Not Bound");
                 }
@@ -132,8 +132,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    }
                     stopService(socketServiceIntent);
                     isServiceStarted = false;
+                    printTv.setText("Service stopped");
                 } else {
-                    printTv.setText("update:Service Not Bound");
+                    printTv.setText("disconnect:Service Not Bound");
                 }
                 break;
         }

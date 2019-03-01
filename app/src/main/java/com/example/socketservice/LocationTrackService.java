@@ -31,8 +31,8 @@ public class LocationTrackService extends Service implements LocationListener {
     boolean canGetLocation = false;
 
     Location loc;
-    double latitude;
-    double longitude;
+    double latitude = -1111;
+    double longitude = -1111;
 
 
 
