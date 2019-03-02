@@ -24,7 +24,7 @@ public class SocketService extends Service {
     //socket variables
     public static final String SERVERIP = "10.13.78.162";//TODO insert pi or computer IP
     public static final int SERVERPORT = 8010;
-    Socket socket;
+    Socket socket = new Socket();
      // InetAddress serverAddr; //todo remove?
     private BufferedReader reader = null;
     private OutputStream writer = null;
@@ -84,28 +84,34 @@ public class SocketService extends Service {
             try {
                 //here you must put your computer's IP address.
                // serverAddr = InetAddress.getByName(SERVERIP);//todo remove?
-                    Log.i("connectSocket","we are in run()");
+                    Log.i("connectSocket","run(): entered");
 
                 //create a socket to make the connection with the server
-                socket = new Socket(SERVERIP, SERVERPORT);
+                socket = new Socket("10.13.78.162", 8010);
 
             } catch (Exception e) {
                 Log.e("S_Error", "Error from making socket", e);
+                Log.i("connectSocket","run(): exception1");
             }
 
             try {
+                Log.i("connectSocket","run(): try to make new reader");
                 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             }catch (Exception e) {
                    Log.e("S_Error", "Error from making socket reader", e);
+                Log.i("connectSocket","run(): exception making reader");
             }
 
             try{
+                Log.i("connectSocket","run(): try to make writer");
                 writer = socket.getOutputStream();
             } catch (Exception e){
                 Log.e("S_Error", "Error from making socket writer", e);
+                Log.i("connectSocket","run(): exception making writer");
             }
 
             //TODO concept test, delete when used
+            Log.i("connectSocket","run(): getting ready to read da message");
             serverSays = readMessage();
             lat = locationTrackServe.getLatitude();
             lon = locationTrackServe.getLongitude();

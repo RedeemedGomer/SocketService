@@ -49,26 +49,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         socketServiceIntent = new Intent(this, SocketService.class);
 
-//        Thread thread = new Thread() {
-//
-//            @Override
-//            public void run() {
-//                try {
-//                    while (!isInterrupted()) {
-//                        Thread.sleep(1000);
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                updateGpsTextView();
-//                            }
-//                        });
-//                    }
-//                } catch (InterruptedException e) {
-//                }
-//            }
-//        };
-//
-//        thread.start();
+        Thread thread = new Thread() {
+
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateGpsTextView();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+
+        thread.start();
 
     }
 
@@ -122,14 +122,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.disconnectButton:
                 if(isServiceBound) {
-//                    if(socketService.getRunDone()){
-//                        String Message = socketService.serverSaysWhat();
-//                        if(Message != null) {
-//                            printTv.setText("Server Says" + Message);
-//                        }else{
-//                            printTv.setText("Server Say Null");
-//                        }
-//                    }
+                    if(socketService.getRunDone()){
+                        String Message = socketService.serverSaysWhat();
+                        if(Message != null) {
+                            printTv.setText("Server Says" + Message);
+                        }else{
+                            printTv.setText("Server Say Null");
+                        }
+                    }
                     stopService(socketServiceIntent);
                     isServiceStarted = false;
                     printTv.setText("Service stopped");
