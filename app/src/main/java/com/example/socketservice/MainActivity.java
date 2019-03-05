@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view){
         switch (view.getId()){
             case R.id.intitializeButton:
-                //intiaize all info
                 socketService.setInitialButtonPressed(true);
+                //intiaize all info for socket initla info burst
                 getDestWaypointFromDropDown();
 
                 break;
@@ -213,6 +213,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    //TODO - move this disable/enable buttons stuff to socket
+    //have socket set disable/enable ^^ ?? I think when we get there yes. have stage 1 2 3 etc with lists of what to enable/disable
+    private void disableInitialBtn () {
+        initialBtn.setEnabled(false);
+        initialBtn.setBackgroundColor(0xaae3d1eb);
+    }
+
+    private void enableInitialBtn (){
+        initialBtn.setEnabled(true);
+        initialBtn.setBackgroundColor(0xffe6caf2);
+    }
 
 
 }
