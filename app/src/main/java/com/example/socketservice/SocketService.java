@@ -22,7 +22,7 @@ import java.net.Socket;
 
 public class SocketService extends Service {
     //socket variables
-    public static final String SERVERIP = "10.13.78.162";//TODO insert pi or computer IP
+    public static final String SERVERIP = "192.168.1.17";//"10.13.78.162";//TODO insert pi or computer IP
     public static final int SERVERPORT = 8010;
     Socket socket = new Socket();
      // InetAddress serverAddr; //todo remove?
@@ -36,6 +36,11 @@ public class SocketService extends Service {
     private Boolean isBound = false;
     private double lat = 1234;
     private double lon = 5678;
+    private int destWaypointNum = -1;
+    private boolean initialButtonPressed = false;
+    private boolean startButtonPressed = false;
+    private boolean  cancelButtonPressed = false;
+    private boolean disconnectButtonPressed = false;
 
     //GPS variables
     LocationTrackService locationTrackServe;//TODO does this work with service context?;
@@ -87,7 +92,7 @@ public class SocketService extends Service {
                     Log.i("connectSocket","run(): entered");
 
                 //create a socket to make the connection with the server
-                socket = new Socket("10.13.78.162", 8010);
+                socket = new Socket(SERVERIP, SERVERPORT);
 
             } catch (Exception e) {
                 Log.e("S_Error", "Error from making socket", e);
@@ -110,14 +115,23 @@ public class SocketService extends Service {
                 Log.i("connectSocket","run(): exception making writer");
             }
 
-            //TODO concept test, delete when used
-            Log.i("connectSocket","run(): getting ready to read da message");
-            serverSays = readMessage();
-            lat = locationTrackServe.getLatitude();
-            lon = locationTrackServe.getLongitude();
-            String messageToSend = "Hi I am phone, my lat:"+lat+",  my lon:"+ lon +"\n";
+            String messageToSend = "connection received!" + "\n";
             sendMessage(messageToSend);
-            runDone = true;
+
+            while (true) {
+                if (initialButtonPressed) {
+                    //TODO concept test, delete when used
+                    Log.i("connectSocket", "run(): getting ready to read da message");
+                    //serverSays = readMessage();
+                    lat = locationTrackServe.getLatitude();
+                    lon = locationTrackServe.getLongitude();
+
+
+                    messageToSend = "Hi I am phone, my lat:" + lat + ",  my lon:" + lon + " and I'm heading to waypoint:" + destWaypointNum + "\n";
+                    sendMessage(messageToSend);
+                }
+            }
+            //runDone = true;
         }
 
     }
@@ -204,6 +218,35 @@ public class SocketService extends Service {
         stopSelf();
     }
 
+    public void setDestWaypointNum(int waypt){
+        this.destWaypointNum = waypt;
+    }
+
+    public int getDestWaypointNum() { return destWaypointNum; }
+
+    public void setInitialButtonPressed (boolean b){
+        this.initialButtonPressed = b;
+    }
+
+    public boolean getInitialButtonPressed (){ return initialButtonPressed;}
+
+    public void setStartButtonPressed (boolean b){
+        this.startButtonPressed = b;
+    }
+
+    public boolean getStartButtonPressed (){ return startButtonPressed;}
+
+    public void setCancelButtonPressed (boolean b){
+        this.cancelButtonPressed = b;
+    }
+
+    public boolean getCancelButtonPressed (){ return cancelButtonPressed;}
+
+    public void setDisconnectButtonPressedButtonPressed (boolean b){
+        this.disconnectButtonPressed = b;
+    }
+
+    public boolean getDisconenctButtonPressed (){ return disconnectButtonPressed;}
 
 
 }

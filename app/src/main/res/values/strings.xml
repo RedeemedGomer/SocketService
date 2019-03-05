@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SocketService</string>
+    <string-array name="destListArray">
+        <item>(SSC) Stevens Student Center</item>
+        <item>(DMC) Dixon Ministry Center</item>
+        <item>(BTS) Center for Biblical and Theological Studies</item>
+        <item>(ENS) Engineering and Science Center</item>
+        <item>(HSC) Health and Science Center</item>
+    </string-array>
 </resources>

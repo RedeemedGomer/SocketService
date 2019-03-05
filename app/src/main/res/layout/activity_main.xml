@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_minions"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -27,13 +28,13 @@
         android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="70dp"
-        android:background="#B0FEAB"
+        android:layout_marginTop="120dp"
+        android:background="#bdeeba"
         android:text="Start"
         android:textAllCaps="false"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/connectButton"
+        app:layout_constraintStart_toEndOf="@+id/intitializeButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -42,14 +43,14 @@
         android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="120dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="#BAE2FF"
+        android:background="#c6dff1"
         android:text="Disconnect"
         android:textAllCaps="false"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cancelButton"
         app:layout_constraintTop_toTopOf="parent" />
@@ -61,11 +62,9 @@
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:text="Choose your destination:"
-        app:layout_constraintBottom_toTopOf="@+id/startButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/statusText" />
 
     <Button
         android:id="@+id/emergancyLandButton"
@@ -76,9 +75,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:background="#D91111"
-        android:text="Emergancy Land"
+        android:background="#bc2f2f"
         android:textColor="@android:color/black"
+        android:text="Emergancy Land"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -121,8 +120,9 @@
         android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="70dp"
-        android:background="#FDFFBA"
+        android:layout_marginTop="120dp"
+        android:background="#eff1c6"
+        android:textColor="@android:color/black"
         android:text="Cancel"
         android:textAllCaps="false"
         android:textSize="14sp"
@@ -130,15 +130,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/connectButton"
+        android:id="@+id/intitializeButton"
         android:layout_width="80dp"
         android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="70dp"
-        android:background="#EABCFE"
-        android:text="Connect"
+        android:layout_marginTop="120dp"
+        android:background="#e6caf2"
+        android:text="Initialize"
         android:textAllCaps="false"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -147,8 +148,8 @@
         android:id="@+id/gps_ui_output"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginTop="104dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
@@ -169,5 +170,18 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gps_ui_output" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#6a3781"
+        android:gravity="center"
+        android:text="Status: Playing Checkers"
+        android:textColor="#EEEDEDED"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
