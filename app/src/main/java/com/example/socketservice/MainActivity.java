@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.disconnectButton:
-                socketService.setStartButtonPressed(true);
+                socketService.setDisconnectButtonPressedButtonPressed(true);
 
                 //disconnect service stuff
                 if(isServiceBound) {
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //startConnection();
                 break;
             case R.id.emergancyLandButton:
-                socketService.setStartButtonPressed(true);
+                socketService.setEmergStopButtonPressed(true);
         }
 
     }
