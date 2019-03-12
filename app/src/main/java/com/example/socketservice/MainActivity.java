@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         thread.start();
 
         //start socket connection
-        startConnection();
+        //startConnection();
 
     }
 
@@ -107,24 +107,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.intitializeButton:
-                socketService.setInitialButtonPressed(true);
-                //intiaize all info for socket initla info burst
-                getWaypointFromDropDown();
-
+            case R.id.intitializeButton: //TODO - Connect Button.
+                startConnection();
                 break;
 
-//            case R.id.startButton:
-//                getWaypointFromDropDown();
-//                socketService.setStartButtonPressed(true);
-//                break;
+            case R.id.startButton:
+                getWaypointFromDropDown();
+                socketService.setStartButtonPressed(true);
+                break;
 
             case R.id.cancelButton:
                 socketService.setCancelButtonPressed(true);
                 break;
 
             case R.id.disconnectButton:
-                socketService.setStartButtonPressed(true);
+                socketService.setDisconnectButtonPressedButtonPressed(true);
 
                 //disconnect service stuff
                 if(isServiceBound) {
@@ -148,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //startConnection();
                 break;
             case R.id.emergancyLandButton:
-                socketService.setStartButtonPressed(true);
+                socketService.setEmergStopButtonPressed(true);
         }
 
     }
