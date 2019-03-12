@@ -101,57 +101,74 @@ public class SocketService extends Service {
         public void run() {
 
             //STAGE #1 START////////////////////////////////////////////////////////////////////////
-            //setup/connect socket + do inital values after intial button is pressed////////////////
+            //setup/connect socket + do initial values after initial button is pressed////////////////
             ////////////////////////////////////////////////////////////////////////////////////////
 
             //socket + read/write setup
-            try {
-                Log.i("connectSocket","run(): entered");
 
-                //create a socket to make the connection with the server
-                socket = new Socket(SERVERIP, SERVERPORT);
+//            try {
+//                Log.i("connectSocket","run(): entered");
+//
+//                //create a socket to make the connection with the server
+//                socket = new Socket(SERVERIP, SERVERPORT);
+//
+//            } catch (Exception e) {
+//                Log.e("S_Error", "Error from making socket", e);
+//                Log.i("connectSocket","run(): exception1");
+//            }
+//
+//            try {
+//                Log.i("connectSocket","run(): try to make new reader");
+//                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//            }catch (Exception e) {
+//                   Log.e("S_Error", "Error from making socket reader", e);
+//                Log.i("connectSocket","run(): exception making reader");
+//            }
+//
+//            try{
+//                Log.i("connectSocket","run(): try to make writer");
+//                writer = socket.getOutputStream();
+//            } catch (Exception e){
+//                Log.e("S_Error", "Error from making socket writer", e);
+//                Log.i("connectSocket","run(): exception making writer");
+//            }
 
-            } catch (Exception e) {
-                Log.e("S_Error", "Error from making socket", e);
-                Log.i("connectSocket","run(): exception1");
-            }
 
-            try {
-                Log.i("connectSocket","run(): try to make new reader");
-                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            }catch (Exception e) {
-                   Log.e("S_Error", "Error from making socket reader", e);
-                Log.i("connectSocket","run(): exception making reader");
-            }
+            //TODO - for button testing
+            //stage 0.
+            //popup: "If you want to exit press the 'Disconnect" button at any time to stop the app."
+            //popup: "If you want to go somewhere pick a destination, then press initialize button."
 
-            try{
-                Log.i("connectSocket","run(): try to make writer");
-                writer = socket.getOutputStream();
-            } catch (Exception e){
-                Log.e("S_Error", "Error from making socket writer", e);
-                Log.i("connectSocket","run(): exception making writer");
-            }
+            //TODO - for button testing
+            //stage 1
+            //active buttons: initial, disconnect
+            //status bar: "Waiting for Initialization"
 
 //            //send/receive initial values after initial = true
 //            boolean initialNotPressedYet = true;
 //            while (initialNotPressedYet){
 //                if (initialButtonPressed){
+                    //TODO - for buttons
+                    //stage 1
+                    //active buttons: start, disconnect
+                    //popup: "This is your last chance to change your destination."
+                    //status bar: "Press Start to begin your journey."
 //                    initialNotPressedYet = false;
 //                }
 //            }
 
-            droneLat = Double.valueOf(readMessageAndAck());
-            droneLong = Double.valueOf(readMessageAndAck());
-            droneVelocity = Float.valueOf(readMessageAndAck());
-            droneHeading = Integer.valueOf(readMessageAndAck());
 
-            //sendMessageGetAck(String.valueOf(destWaypointNum));
-            sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude()));
-            sendMessageGetAck(String.valueOf(locationTrackServe.getLongitude()));
-            sendMessageGetAck(String.valueOf(startButtonPressed));
-            sendMessageGetAck(String.valueOf(cancelButtonPressed));
-            sendMessageGetAck(String.valueOf(emergStopButtonPressed));
-            sendMessageGetAck(String.valueOf(disconnectButtonPressed));
+//            droneLat = Double.valueOf(readMessageAndAck());
+//            droneLong = Double.valueOf(readMessageAndAck());
+//            droneVelocity = Float.valueOf(readMessageAndAck());
+//            droneHeading = Integer.valueOf(readMessageAndAck());
+//
+//            sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude()));
+//            sendMessageGetAck(String.valueOf(locationTrackServe.getLongitude()));
+//            sendMessageGetAck(String.valueOf(startButtonPressed));
+//            sendMessageGetAck(String.valueOf(cancelButtonPressed));
+//            sendMessageGetAck(String.valueOf(emergStopButtonPressed));
+//            sendMessageGetAck(String.valueOf(disconnectButtonPressed));
 
 
             //STAGE #2 START////////////////////////////////////////////////////////////////////////
@@ -185,12 +202,6 @@ public class SocketService extends Service {
                     SystemClock.sleep(2000); //add delay so person has time to press before take-off
                     boolean tempCancel = cancelButtonPressed;
 
-
-                        sendMessageGetAck(String.valueOf(destWaypointNum));
-                        sendMessageGetAck(String.valueOf(startWaypointNum));
-                        sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude()));
-                        sendMessageGetAck(String.valueOf(locationTrackServe.getLongitude()));
-                        sendMessageGetAck(String.valueOf(tempCancel));
 
                     if (tempCancel) {
                         System.out.println("should be mission aborted: "+ readMessageAndAck()); //receiving mission aborted
@@ -230,12 +241,25 @@ public class SocketService extends Service {
                         startButtonPressed = false;
                     }
                     debugMessages = debugMessages + "\n" + "'done' found. flight finished";
+
+                    //TODO - buttons
+                    //active: start, disconnect
+                    //status: "You have arrived at your destination."
                     doFlight = false;
                 }
 
+                //TODO - buttons
+                //popup: "If you want to exit press the disconnect button and exit the app. If you want to go on a new journey choose a new location and press start."
             }
+
+
+
+            //TODO - Button functionality
+            //active buttons: no active buttons
+            //popup: "The communication between app and drone has been correctly disconnected. Please close the app."
+            //popup
             resetButtons();
-            serverSays = debugMessages; //get if any left that haven't been update to screen yet
+            serverSays = debugMessages;
             runDone = true;
         }
 
