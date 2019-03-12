@@ -203,7 +203,7 @@ public class SocketService extends Service {
                     boolean tempCancel = cancelButtonPressed;
 
                     sendMessageGetAck(String.valueOf(destWaypointNum));
-                    sendMessageGetAck(String.valueOf(0)); //start waypoint #
+                    sendMessageGetAck(String.valueOf(startWaypointNum)); //start waypoint #
                     sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude()));
                     sendMessageGetAck(String.valueOf(locationTrackServe.getLongitude()));
                     sendMessageGetAck(String.valueOf(tempCancel));

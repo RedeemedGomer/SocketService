@@ -200,24 +200,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-//        //start waypoint
-//        String startName = selectStartList.getSelectedItem().toString();
-//        if (startName.equals("(SSC) Stevens Student Center")){
-//            socketService.setStartWaypointNum(0);
-//            //debugTextView.append("\n SSC");
-//        }else if (startName.equals("(DMC) Dixon Ministry Center")){
-//            socketService.setStartWaypointNum(9);
-//            //debugTextView.append("\n DMC");
-//        }else if (startName.equals("(BTS) Center for Biblical and Theological Studies")){
-//            socketService.setStartWaypointNum(11);
-//            //debugTextView.append("\n BTS");
-//        }else if (startName.equals("(ENS) Engineering and Science Center")){
-//            socketService.setStartWaypointNum(22);
-//            //debugTextView.append("\n ENS");
-//        }else if (startName.equals("(HSC) Health and Science Center")){
-//            socketService.setStartWaypointNum(28);
-//            //debugTextView.append("\n HSC");
-//        }
+        //start waypoint
+        String startName = selectStartList.getSelectedItem().toString();
+        if (startName.equals("(SSC) Stevens Student Center")){
+            socketService.setStartWaypointNum(0);
+            //debugTextView.append("\n SSC");
+        }else if (startName.equals("(DMC) Dixon Ministry Center")){
+            socketService.setStartWaypointNum(9);
+            //debugTextView.append("\n DMC");
+        }else if (startName.equals("(BTS) Center for Biblical and Theological Studies")){
+            socketService.setStartWaypointNum(11);
+            //debugTextView.append("\n BTS");
+        }else if (startName.equals("(ENS) Engineering and Science Center")){
+            socketService.setStartWaypointNum(22);
+            //debugTextView.append("\n ENS");
+        }else if (startName.equals("(HSC) Health and Science Center")){
+            socketService.setStartWaypointNum(28);
+            //debugTextView.append("\n HSC");
+        }
 
     }
 
