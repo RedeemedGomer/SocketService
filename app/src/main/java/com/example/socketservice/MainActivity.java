@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //local gui variables
     private Button startBtn, cancelBtn, initialBtn, disconnectBtn;// initializeButton;
-    private Spinner selectDestList;
+    private Spinner selectDestList, selectStartList;
     private TextView printTv, gpsTv;
 
     @Override
@@ -44,12 +44,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         printTv = (TextView) findViewById(R.id.debugTextView);
         gpsTv = (TextView)findViewById(R.id.gps_ui_output);
         selectDestList = (Spinner) findViewById(R.id.selectDestList);
+        selectStartList = (Spinner) findViewById(R.id.selectDestList2);
 
         //set up spinner-dropdown menu
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.destListArray, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectDestList.setAdapter(adapter);
+        selectStartList.setAdapter(adapter);
+
 
         //send all onClicks to local switch statement
         startBtn.setOnClickListener(this);
@@ -65,11 +68,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 updateGpsTextView();
+                                updateDebugTextView();
                             }
                         });
                     }
@@ -93,57 +97,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void updateDebugTextView() {
+        if (isServiceBound){
+            printTv.append(socketService.getDebugMesseges());
+            socketService.resetDebugMessages();
+        }
+    }
+
     @Override
     public void onClick(View view){
         switch (view.getId()){
             case R.id.intitializeButton:
                 socketService.setInitialButtonPressed(true);
                 //intiaize all info for socket initla info burst
-                getDestWaypointFromDropDown();
+                getWaypointFromDropDown();
 
                 break;
 
-            case R.id.startButton:
-                if(isServiceBound){
-                    String Message = socketService.getLatLonString();
-                    printTv.append("dest waypoint = " + socketService.getDestWaypointNum() + "\n");
-                    gpsTv.setText(Message);
-                }else{
-
-                    printTv.setText("start: Service wasn't bound");
-                }
-                break;
+//            case R.id.startButton:
+//                getWaypointFromDropDown();
+//                socketService.setStartButtonPressed(true);
+//                break;
 
             case R.id.cancelButton:
-                if(isServiceBound) {
-                    unbindService();
-                    printTv.setText("Service unbound");
-                } else {
-                    printTv.setText("cancel:Service Not Bound");
-                }
+                socketService.setCancelButtonPressed(true);
                 break;
 
             case R.id.disconnectButton:
+                socketService.setStartButtonPressed(true);
+
+                //disconnect service stuff
                 if(isServiceBound) {
                     if(socketService.getRunDone()){
                         String Message = socketService.serverSaysWhat();
                         if(Message != null) {
-                            printTv.setText("Server Says" + Message);
+                            printTv.append("Server Says" + Message);
                         }else{
-                            printTv.setText("Server Say Null");
+                            printTv.append("Server Say Null");
                         }
                     }
                     stopService(socketServiceIntent);
                     isServiceStarted = false;
-                    printTv.setText("Service stopped");
+                    printTv.append("Service stopped");
                 } else {
-                    printTv.setText("disconnect:Service Not Bound");
+                    printTv.append("disconnect:Service Not Bound");
                 }
 
                 //restart connection in prep for new connection
                 //maybe later have dialog asking if you want to start a new one or close app (if close app picked then close the app automatically)
-                startConnection();
+                //startConnection();
                 break;
+            case R.id.emergancyLandButton:
+                socketService.setStartButtonPressed(true);
         }
 
     }
@@ -177,7 +182,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void getDestWaypointFromDropDown(){
+    private void getWaypointFromDropDown(){
+        //dest waypoint
         String destName = selectDestList.getSelectedItem().toString();
         if (destName.equals("(SSC) Stevens Student Center")){
             socketService.setDestWaypointNum(0);
@@ -195,6 +201,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             socketService.setDestWaypointNum(28);
             //debugTextView.append("\n HSC");
         }
+
+
+        //start waypoint
+        String startName = selectStartList.getSelectedItem().toString();
+        if (startName.equals("(SSC) Stevens Student Center")){
+            socketService.setStartWaypointNum(0);
+            //debugTextView.append("\n SSC");
+        }else if (startName.equals("(DMC) Dixon Ministry Center")){
+            socketService.setStartWaypointNum(9);
+            //debugTextView.append("\n DMC");
+        }else if (startName.equals("(BTS) Center for Biblical and Theological Studies")){
+            socketService.setStartWaypointNum(11);
+            //debugTextView.append("\n BTS");
+        }else if (startName.equals("(ENS) Engineering and Science Center")){
+            socketService.setStartWaypointNum(22);
+            //debugTextView.append("\n ENS");
+        }else if (startName.equals("(HSC) Health and Science Center")){
+            socketService.setStartWaypointNum(28);
+            //debugTextView.append("\n HSC");
+        }
+
     }
 
     private void startConnection(){
@@ -214,17 +241,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //TODO - move this disable/enable buttons stuff to socket
-    //have socket set disable/enable ^^ ?? I think when we get there yes. have stage 1 2 3 etc with lists of what to enable/disable
-    private void disableInitialBtn () {
-        initialBtn.setEnabled(false);
-        initialBtn.setBackgroundColor(0xaae3d1eb);
-    }
-
-    private void enableInitialBtn (){
-        initialBtn.setEnabled(true);
-        initialBtn.setBackgroundColor(0xffe6caf2);
-    }
 
 
 }
