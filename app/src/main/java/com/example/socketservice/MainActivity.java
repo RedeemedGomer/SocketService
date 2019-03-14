@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //local gui variables
     private Button startBtn, cancelBtn, initialBtn, disconnectBtn;// initializeButton;
     private Spinner selectDestList, selectStartList;
-    private TextView printTv, gpsTv;
+    private TextView debugTv, gpsTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initialBtn = (Button)  findViewById(R.id.intitializeButton);
         disconnectBtn = (Button) findViewById(R.id.disconnectButton);
         //initializeButton = (Button) findViewById(R.id.initializeButton);
-        printTv = (TextView) findViewById(R.id.debugTextView);
+        debugTv = (TextView) findViewById(R.id.debugTextView);
+        debugTv.setMovementMethod(new ScrollingMovementMethod());
         gpsTv = (TextView)findViewById(R.id.gps_ui_output);
         selectDestList = (Spinner) findViewById(R.id.selectDestList);
         selectStartList = (Spinner) findViewById(R.id.selectDestList2);
@@ -83,10 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         thread.start();
-
-        //start socket connection
-        //startConnection();
-
     }
 
     private void updateGpsTextView(){
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void updateDebugTextView() {
         if (isServiceBound){
-            printTv.append(socketService.getDebugMesseges());
+            debugTv.append(socketService.getDebugMesseges());
             socketService.resetDebugMessages();
         }
     }
@@ -128,16 +126,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(socketService.getRunDone()){
                         String Message = socketService.serverSaysWhat();
                         if(Message != null) {
-                            printTv.append("Server Says" + Message);
+                            debugTv.append("Server Says" + Message);
                         }else{
-                            printTv.append("Server Say Null");
+                            debugTv.append("Server Say Null");
                         }
                     }
                     stopService(socketServiceIntent);
                     isServiceStarted = false;
-                    printTv.append("Service stopped");
+                    debugTv.append("Service stopped");
                 } else {
-                    printTv.append("disconnect:Service Not Bound");
+                    debugTv.append("disconnect:Service Not Bound");
                 }
 
                 //restart connection in prep for new connection
@@ -225,10 +223,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         if(isServiceStarted) {
             if (isServiceBound) {
-                printTv.setText("Service already Bound");
+                debugTv.setText("Service already Bound");
             } else {
                 bindService();
-                printTv.setText("Service wasn't bound, bounding initiated, check again");
+                debugTv.setText("Service wasn't bound, bounding initiated, check again");
             }
         } else{
             startService(socketServiceIntent);
