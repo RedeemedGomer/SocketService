@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Boolean runDone;
     private Boolean isServiceStarted = false;
     private static int waypoint = -1;
+    private int status = 0;
 
 
     //local gui variables
@@ -64,7 +65,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         socketServiceIntent = new Intent(this, SocketService.class);
 
-        Thread thread = new Thread() {
+
+
+        Thread threadUpdateTextViews = new Thread() {
 
             @Override
             public void run() {
@@ -84,7 +87,72 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        thread.start();
+        threadUpdateTextViews.start();
+
+        Thread threadCheckCommStatus = new Thread() {
+
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(100);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (socketService!= null) {
+                                    status = socketService.getCommStage();
+                                    switch (status){
+
+
+
+
+
+                                        case 1:
+                                            disableConnectBtn();
+                                            disableStartBtn();
+                                            disableCancelBtn();
+                                            disableDisconnectBtn();
+                                            break;
+                                        case 2:
+                                            disableConnectBtn();
+                                            enableStartBtn();
+                                            disableCancelBtn();
+                                            enableDisconnectBtn();
+                                            break;
+                                        case 3:
+                                            disableConnectBtn();
+                                            disableStartBtn();
+                                            enableCancelBtn();
+                                            disableDisconnectBtn();
+                                            break;
+                                        case 4:
+                                            enableConnectBtn();
+                                            disableStartBtn();
+                                            disableCancelBtn();
+                                            disableDisconnectBtn();
+                                            break;
+                                        default:
+                                            enableConnectBtn();
+                                            disableStartBtn();
+                                            disableCancelBtn();
+                                            disableDisconnectBtn();
+                                            break;
+                                    }
+
+                                } else{ //no socket so only connect enabled and colored
+                                    startUpButtonConfig();
+                                }
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+
+        threadCheckCommStatus.start();
+
+
     }
 
     private void updateGpsTextView(){
@@ -122,21 +190,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 socketService.setDisconnectButtonPressedButtonPressed(true);
 
                 //disconnect service stuff
-                if(isServiceBound) {
-                    if(socketService.getRunDone()){
-                        String Message = socketService.serverSaysWhat();
-                        if(Message != null) {
-                            debugTv.append("Server Says" + Message);
-                        }else{
-                            debugTv.append("Server Say Null");
-                        }
-                    }
-                    stopService(socketServiceIntent);
-                    isServiceStarted = false;
-                    debugTv.append("Service stopped");
-                } else {
-                    debugTv.append("disconnect:Service Not Bound");
-                }
+//                if(isServiceBound) {
+//                    if(socketService.getRunDone()){
+//                        String Message = socketService.serverSaysWhat();
+//                        if(Message != null) {
+//                            debugTv.append("Server Says" + Message);
+//                        }else{
+//                            debugTv.append("Server Say Null");
+//                        }
+//                    }
+//                    stopService(socketServiceIntent);
+//                    isServiceStarted = false;
+//                    debugTv.append("Service stopped");
+//                } else {
+//                    debugTv.append("disconnect:Service Not Bound");
+//                }
 
                 //restart connection in prep for new connection
                 //maybe later have dialog asking if you want to start a new one or close app (if close app picked then close the app automatically)
@@ -198,24 +266,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-        //start waypoint
-        String startName = selectStartList.getSelectedItem().toString();
-        if (startName.equals("(SSC) Stevens Student Center")){
-            socketService.setStartWaypointNum(0);
-            //debugTextView.append("\n SSC");
-        }else if (startName.equals("(DMC) Dixon Ministry Center")){
-            socketService.setStartWaypointNum(9);
-            //debugTextView.append("\n DMC");
-        }else if (startName.equals("(BTS) Center for Biblical and Theological Studies")){
-            socketService.setStartWaypointNum(11);
-            //debugTextView.append("\n BTS");
-        }else if (startName.equals("(ENS) Engineering and Science Center")){
-            socketService.setStartWaypointNum(22);
-            //debugTextView.append("\n ENS");
-        }else if (startName.equals("(HSC) Health and Science Center")){
-            socketService.setStartWaypointNum(28);
-            //debugTextView.append("\n HSC");
-        }
+//        //start waypoint
+//        String startName = selectStartList.getSelectedItem().toString();
+//        if (startName.equals("(SSC) Stevens Student Center")){
+//            socketService.setStartWaypointNum(0);
+//            //debugTextView.append("\n SSC");
+//        }else if (startName.equals("(DMC) Dixon Ministry Center")){
+//            socketService.setStartWaypointNum(9);
+//            //debugTextView.append("\n DMC");
+//        }else if (startName.equals("(BTS) Center for Biblical and Theological Studies")){
+//            socketService.setStartWaypointNum(11);
+//            //debugTextView.append("\n BTS");
+//        }else if (startName.equals("(ENS) Engineering and Science Center")){
+//            socketService.setStartWaypointNum(22);
+//            //debugTextView.append("\n ENS");
+//        }else if (startName.equals("(HSC) Health and Science Center")){
+//            socketService.setStartWaypointNum(28);
+//            //debugTextView.append("\n HSC");
+//        }
 
     }
 
@@ -235,7 +303,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //have socket set disable/enable ^^ ?? I think when we get there yes. have stage 1 2 3 etc with lists of what to enable/disable
+    private void disableConnectBtn () {
+        initialBtn.setEnabled(false);
+        initialBtn.setBackgroundColor(0x51ededed); //51EDEDED
+    }
 
+    private void enableConnectBtn (){
+        initialBtn.setEnabled(true);
+        if (!socketService.getInitialButtonPressed()) {
+            initialBtn.setBackgroundColor(0xffe6caf2);
+        } else {
+            initialBtn.setBackgroundColor(0xaae3d1eb);
+        }
+    }
 
+    private void disableStartBtn () {
+        startBtn.setEnabled(false);
+        startBtn.setBackgroundColor(0x51ededed);
+    }
+
+    private void enableStartBtn (){
+        startBtn.setEnabled(true);
+        if (!socketService.getStartButtonPressed()) {
+            startBtn.setBackgroundColor(0xffbdeeba);
+        } else {
+            startBtn.setBackgroundColor(0xaac5e5c2);
+        }
+    }
+
+    private void disableCancelBtn () {
+        cancelBtn.setEnabled(false);
+        cancelBtn.setBackgroundColor(0x51ededed);
+    }
+
+    private void enableCancelBtn (){
+        cancelBtn.setEnabled(true);
+        if (!socketService.getCancelButtonPressed()) {
+            cancelBtn.setBackgroundColor(0xffeff1c6);
+        } else {
+            cancelBtn.setBackgroundColor(0xaae9eacd);
+        }
+    }
+
+    private void disableDisconnectBtn () {
+        disconnectBtn.setEnabled(false);
+        disconnectBtn.setBackgroundColor(0x51ededed);
+    }
+
+    private void enableDisconnectBtn (){
+        disconnectBtn.setEnabled(true);
+        if (!socketService.getDisconenctButtonPressed()) {
+            disconnectBtn.setBackgroundColor(0xffc6dff1);
+        } else {
+            disconnectBtn.setBackgroundColor(0xaacddeea);
+        }
+    }
+
+    private void startUpButtonConfig(){
+        initialBtn.setEnabled(true);
+        initialBtn.setBackgroundColor(0xffe6caf2);
+
+        startBtn.setEnabled(false);
+        startBtn.setBackgroundColor(0x51ededed);
+
+        cancelBtn.setEnabled(false);
+        cancelBtn.setBackgroundColor(0x51ededed);
+
+        disconnectBtn.setEnabled(false);
+        disconnectBtn.setBackgroundColor(0x51ededed);
+    }
 
 }
