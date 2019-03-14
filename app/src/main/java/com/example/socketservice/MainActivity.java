@@ -24,13 +24,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Boolean runDone;
     private Boolean isServiceStarted = false;
     private static int waypoint = -1;
-    private int status = 0;
+    private int stage = 0;
 
 
     //local gui variables
     private Button startBtn, cancelBtn, initialBtn, disconnectBtn;// initializeButton;
     private Spinner selectDestList, selectStartList;
-    private TextView debugTv, gpsTv;
+    private TextView debugTv, gpsTv, statusTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         debugTv = (TextView) findViewById(R.id.debugTextView);
         debugTv.setMovementMethod(new ScrollingMovementMethod());
         gpsTv = (TextView)findViewById(R.id.gps_ui_output);
+        statusTv = (TextView) findViewById(R.id.statusText);
         selectDestList = (Spinner) findViewById(R.id.selectDestList);
         selectStartList = (Spinner) findViewById(R.id.selectDestList2);
 
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         socketServiceIntent = new Intent(this, SocketService.class);
 
+        statusTv.setText("ready to connect"); //initial
+
+
 
 
         Thread threadUpdateTextViews = new Thread() {
@@ -73,12 +77,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        Thread.sleep(500);
+                        Thread.sleep(100);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 updateGpsTextView();
                                 updateDebugTextView();
+                                if (socketService != null) {
+                                    updateStatusTextView(socketService.getStatusText());
+                                }
                             }
                         });
                     }
@@ -100,13 +107,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void run() {
                                 if (socketService!= null) {
-                                    status = socketService.getCommStage();
-                                    switch (status){
-
-
-
-
-
+                                    stage = socketService.getCommStage();
+                                    switch (stage){
                                         case 1:
                                             disableConnectBtn();
                                             disableStartBtn();
@@ -170,6 +172,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void updateStatusTextView(String s){
+        if (isServiceBound){
+            statusTv.setText(s);
+        }
+    }
+
     @Override
     public void onClick(View view){
         switch (view.getId()){
@@ -188,27 +196,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.disconnectButton:
                 socketService.setDisconnectButtonPressedButtonPressed(true);
-
+                stage = 4;
                 //disconnect service stuff
-//                if(isServiceBound) {
-//                    if(socketService.getRunDone()){
-//                        String Message = socketService.serverSaysWhat();
-//                        if(Message != null) {
-//                            debugTv.append("Server Says" + Message);
-//                        }else{
-//                            debugTv.append("Server Say Null");
-//                        }
-//                    }
-//                    stopService(socketServiceIntent);
-//                    isServiceStarted = false;
-//                    debugTv.append("Service stopped");
-//                } else {
-//                    debugTv.append("disconnect:Service Not Bound");
-//                }
+                if(isServiceBound) {
+                    if(socketService.getRunDone()){
+                        String Message = socketService.serverSaysWhat();
+                        if(Message != null) {
+                            debugTv.append("Server Says" + Message);
+                        }else{
+                            debugTv.append("Server Say Null");
+                        }
+                    }
+                    stopService(socketServiceIntent);
+                    isServiceStarted = false;
+                    debugTv.append("Service stopped");
+                } else {
+                    debugTv.append("disconnect:Service Not Bound");
+                }
 
-                //restart connection in prep for new connection
-                //maybe later have dialog asking if you want to start a new one or close app (if close app picked then close the app automatically)
-                //startConnection();
+                //TODO - set status to
+                //statusTv.setText("Ready to Connect"); //overwrite status in socket service if needed
+
                 break;
             case R.id.emergancyLandButton:
                 socketService.setEmergStopButtonPressed(true);

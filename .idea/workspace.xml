@@ -18,10 +18,8 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/LocationTrackService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/LocationTrackService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,14 +63,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="11997" />
+          <entry key="java" value="12788" />
           <entry key="txt" value="60" />
           <entry key="xml" value="65" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="11997" />
+          <entry key="JAVA" value="12788" />
           <entry key="PLAIN_TEXT" value="60" />
           <entry key="XML" value="65" />
         </counts>
@@ -81,14 +79,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="162" column="9" lean-forward="true" selection-start-line="162" selection-start-column="9" selection-end-line="162" selection-end-column="9" />
+            <state relative-caret-position="323">
+              <caret line="69" selection-start-line="69" selection-end-line="69" />
               <folding>
-                <element signature="e#2941#3207#0" expanded="true" />
-                <element signature="e#3206#3207#0" expanded="true" />
+                <element signature="e#3064#3851#0" expanded="true" />
+                <element signature="e#3011#3432#0" expanded="true" />
+                <element signature="e#3431#3432#0" expanded="true" />
+                <element signature="e#3850#3851#0" expanded="true" />
                 <element signature="e#3406#4387#0" expanded="true" />
                 <element signature="e#3626#5789#0" expanded="true" />
                 <element signature="e#5788#5789#0" expanded="true" />
@@ -98,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="341" column="24" selection-start-line="341" selection-start-column="18" selection-end-line="341" selection-end-column="24" />
+            <state relative-caret-position="255">
+              <caret line="246" lean-forward="true" selection-start-line="246" selection-end-line="246" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -114,17 +114,17 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/LocationTrackService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="476">
-              <caret line="142" column="32" lean-forward="true" selection-start-line="142" selection-start-column="32" selection-end-line="142" selection-end-column="32" />
+              <caret line="142" column="32" selection-start-line="142" selection-start-column="32" selection-end-line="142" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-          <provider editor-type-id="android-designer2" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="532">
-              <caret line="128" column="37" selection-start-line="128" selection-start-column="29" selection-end-line="128" selection-end-column="37" />
+          <provider selected="true" editor-type-id="android-designer2" />
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="430">
+              <caret line="108" column="43" selection-start-line="108" selection-start-column="43" selection-end-line="108" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -150,9 +150,11 @@
       <find>startWaypointNum</find>
       <find>printTv</find>
       <find>stage = 4</find>
-      <find>start</find>
       <find>waypoint</find>
       <find>getLat</find>
+      <find>update</find>
+      <find>statusText</find>
+      <find>start</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -163,10 +165,10 @@
       <list>
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/LocationTrackService.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/LocationTrackService.java" />
       </list>
     </option>
   </component>
@@ -403,10 +405,10 @@
       <window_info anchor="bottom" id="TODO" order="1" sideWeight="0.71338475" weight="0.32885906" />
       <window_info anchor="bottom" id="Android Profiler" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4926419" weight="0.32885906" />
-      <window_info active="true" anchor="bottom" id="Run" order="4" sideWeight="0.49614576" visible="true" weight="0.32885906" />
+      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.49614576" weight="0.32885906" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5073581" side_tool="true" weight="0.32885906" />
       <window_info anchor="bottom" id="Version Control" order="6" sideWeight="0.49894884" weight="0.32885906" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.7498248" weight="0.3181208" />
+      <window_info active="true" anchor="bottom" id="Build" order="7" sideWeight="0.7498248" visible="true" weight="0.3181208" />
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.7210932" weight="0.32885906" />
       <window_info anchor="bottom" id="Find" order="9" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
@@ -453,25 +455,25 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java</url>
-          <line>274</line>
+          <line>273</line>
           <properties />
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java</url>
-          <line>148</line>
+          <line>143</line>
           <properties />
           <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java</url>
-          <line>255</line>
+          <line>249</line>
           <properties />
           <option name="timeStamp" value="108" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java</url>
-          <line>268</line>
+          <line>267</line>
           <properties />
           <option name="timeStamp" value="110" />
         </line-breakpoint>
@@ -606,14 +608,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="128" column="37" selection-start-line="128" selection-start-column="29" selection-end-line="128" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/android/location/Location.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -625,34 +619,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="341" column="24" selection-start-line="341" selection-start-column="18" selection-end-line="341" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="108" column="43" selection-start-line="108" selection-start-column="43" selection-end-line="108" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/LocationTrackService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
-          <caret line="142" column="32" lean-forward="true" selection-start-line="142" selection-start-column="32" selection-end-line="142" selection-end-column="32" />
+          <caret line="142" column="32" selection-start-line="142" selection-start-column="32" selection-end-line="142" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="162" column="9" lean-forward="true" selection-start-line="162" selection-start-column="9" selection-end-line="162" selection-end-column="9" />
+        <state relative-caret-position="323">
+          <caret line="69" selection-start-line="69" selection-end-line="69" />
           <folding>
-            <element signature="e#2941#3207#0" expanded="true" />
-            <element signature="e#3206#3207#0" expanded="true" />
+            <element signature="e#3064#3851#0" expanded="true" />
+            <element signature="e#3011#3432#0" expanded="true" />
+            <element signature="e#3431#3432#0" expanded="true" />
+            <element signature="e#3850#3851#0" expanded="true" />
             <element signature="e#3406#4387#0" expanded="true" />
             <element signature="e#3626#5789#0" expanded="true" />
             <element signature="e#5788#5789#0" expanded="true" />
             <element signature="e#4386#4387#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="246" lean-forward="true" selection-start-line="246" selection-end-line="246" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

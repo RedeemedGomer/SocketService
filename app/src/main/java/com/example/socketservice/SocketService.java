@@ -56,7 +56,7 @@ public class SocketService extends Service {
     private boolean  cancelButtonPressed = false;
     private boolean disconnectButtonPressed = false;
     private boolean emergStopButtonPressed = false;
-    private String socketMessage = "";
+    private String statusText = "";
     private String debugMessages = "";
 
     //stage varibles for buttons + UI output
@@ -103,18 +103,13 @@ public class SocketService extends Service {
         @Override
         public void run() {
 
-            SystemClock.sleep(2000);
-            //TODO  - when app starts status = "Waiting to Connect" + connect button on
-
             //STAGE #1 START////////////////////////////////////////////////////////////////////////
             //setup/connect socket + do initial values after initial button is pressed////////////////
             ////////////////////////////////////////////////////////////////////////////////////////
 
             SystemClock.sleep(2000);
             stage = 1;
-            //no change in buttons
-            //TODO status: "Estiblishing Comm with Drone"
-
+            statusText = "establishing comm with drone";
 
 
             //socket + read/write setup
@@ -150,7 +145,7 @@ public class SocketService extends Service {
 
 
             SystemClock.sleep(2000);
-//            //TODO - status="Comm with Drone Established"
+            statusText = "comm with drone established";
 //
 //            droneLat = Double.valueOf(readMessageAndAck());
 //            droneLong = Double.valueOf(readMessageAndAck());
@@ -174,8 +169,7 @@ public class SocketService extends Service {
             while (true) {
                 SystemClock.sleep(2000);
                 stage = 2;
-                //TODO status: "Waiting for Start"
-                //TODO active buttons: start, disconnect
+                statusText = "ready to fly";
 
 
                 boolean tempStart = startButtonPressed; //temps to keep drone + app in sync
@@ -185,7 +179,7 @@ public class SocketService extends Service {
 
                 if (tempDis) {
                     SystemClock.sleep(2000);
-                    //TODO change status to "Prepair to Disconnect Comm"
+                    statusText = "preparing to disconnect comm";
                     serverSays = "disconnect button pressed. stop socket functionality. (around line 164)";
                     debugMessages = "disconnect button pressed. stop socket functionality. (around line 164)";
                     break;
@@ -204,8 +198,7 @@ public class SocketService extends Service {
                 while (doFlight){
                     SystemClock.sleep(2000);
                     stage = 3;
-                    //TODO status = "Takeoff"
-                    //TODO active buttons: cancel
+                    statusText = "preparing to fly";
 
                     boolean tempCancel = cancelButtonPressed;
 
@@ -217,6 +210,7 @@ public class SocketService extends Service {
 
                     if (tempCancel) {
                         SystemClock.sleep(2000);
+                        statusText = "mission canceled";
                         System.out.println("should be mission aborted: "+ readMessageAndAck()); //receiving mission aborted
                         resetButtonsExceptConnect();
                         serverSays = "cancel has been pressed. (around line 187)";
@@ -241,9 +235,9 @@ public class SocketService extends Service {
                     ////////////////////////////////////////////////////////////////////////////////
 
 
-
                     if (tempCancel) {
                         SystemClock.sleep(2000);
+                        statusText = "mission canceled. landing...";
                         System.out.println("should be mission aborted: "+ readMessageAndAck()); //receiving mission aborted
                         resetButtonsExceptConnect();
                         serverSays = "cancel has been pressed. (around line 187)";
@@ -256,10 +250,15 @@ public class SocketService extends Service {
 //                    socketMessage = readMessageAndAck();
 //                    boolean cancelSent = false;
 //                    while (!socketMessage.equals("done")){
+
 //                        //check if cancel value requested from drone. if so give drone cancel value before continuing
 //                        if (socketMessage.equals("cancel")){
 //                            while (socketMessage.equals("cancel")){
-//                                sendMessageGetAck(String.valueOf(cancelButtonPressed));
+//                                tempCancel = cancelButtonPressed;
+//                                sendMessageGetAck(String.valueOf(tempCancel));
+//                                if (tempCancel){
+//                                    statusText = "mission canceled. landing...";
+//                                }
 //                                socketMessage = readMessageAndAck();
 //                            }
 //                            if (socketMessage.equals("done")){
@@ -284,7 +283,7 @@ public class SocketService extends Service {
 
                     SystemClock.sleep(2000);
                     resetButtons();
-                    //TODO status: "You have arrived at your destination."
+                    statusText = "you have arrived :)";
                     doFlight = false;
                 }
 
@@ -477,8 +476,7 @@ public class SocketService extends Service {
 
     public int getCommStage(){return stage;}
 
-
-
+    public String getStatusText(){ return statusText;}
 
 
 
