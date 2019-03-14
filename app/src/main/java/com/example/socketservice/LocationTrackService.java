@@ -20,6 +20,8 @@ import android.util.Log;
  * Created by anupamchugh on 28/11/16.
  */
 
+//TODO - Ailin: fix gps so it grabs current coordinates. if no coordinates are availible (like indoors) still return the detected lat and lon (should both be 0)
+
 public class LocationTrackService extends Service implements LocationListener {
 
     boolean checkGPS = false;
