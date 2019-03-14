@@ -199,7 +199,6 @@ public class SocketService extends Service {
                 }
 
                 while (doFlight){
-                    SystemClock.sleep(2000); //add delay so person has time to press before take-off
                     boolean tempCancel = cancelButtonPressed;
 
                     sendMessageGetAck(String.valueOf(destWaypointNum));
@@ -232,8 +231,34 @@ public class SocketService extends Service {
                     //STAGE #4 drone continues on flight path and lands at destination
                     ////////////////////////////////////////////////////////////////////////////////
 
+
+
+                    if (tempCancel) {
+                        System.out.println("should be mission aborted: "+ readMessageAndAck()); //receiving mission aborted
+                        resetButtons();
+                        serverSays = "cancel has been pressed. (around line 187)";
+                        debugMessages = "cancel has been pressed. (around line 187)";
+                        break;
+                    }
+
+
+
                     socketMessage = readMessageAndAck();
+                    boolean cancelSent = false;
                     while (!socketMessage.equals("done")){
+                        //check if cancel value requested from drone. if so give drone cancel value before continuing
+                        if (socketMessage.equals("cancel")){
+                            while (socketMessage.equals("cancel")){
+                                sendMessageGetAck(String.valueOf(cancelButtonPressed));
+                                socketMessage = readMessageAndAck();
+                            }
+                            if (socketMessage.equals("done")){
+                                //end while loop
+                                break;
+                            }
+                            //droneLat = Double.valueOf(readMessageAndAck());
+
+                        }
                         droneLat = Double.valueOf(socketMessage);
                         droneLong = Double.valueOf(readMessageAndAck());
                         droneAlt = Double.valueOf(readMessageAndAck());
@@ -246,7 +271,7 @@ public class SocketService extends Service {
                         startButtonPressed = false;
                     }
                     debugMessages = debugMessages + "\n" + "'done' found. flight finished";
-
+                    resetButtons(); //TODO - RETHINK BUTTON LOGIC for active and unactive
                     //TODO - buttons
                     //active: start, disconnect
                     //status: "You have arrived at your destination."
