@@ -20,6 +20,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -63,48 +64,50 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="12788" />
+          <entry key="java" value="13108" />
           <entry key="txt" value="60" />
-          <entry key="xml" value="65" />
+          <entry key="xml" value="85" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="12788" />
+          <entry key="JAVA" value="13108" />
           <entry key="PLAIN_TEXT" value="60" />
-          <entry key="XML" value="65" />
+          <entry key="XML" value="85" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="69" selection-start-line="69" selection-end-line="69" />
+            <state relative-caret-position="431">
+              <caret line="251" column="92" lean-forward="true" selection-start-line="251" selection-start-column="92" selection-end-line="251" selection-end-column="92" />
               <folding>
-                <element signature="e#3064#3851#0" expanded="true" />
-                <element signature="e#3011#3432#0" expanded="true" />
-                <element signature="e#3431#3432#0" expanded="true" />
-                <element signature="e#3850#3851#0" expanded="true" />
-                <element signature="e#3406#4387#0" expanded="true" />
-                <element signature="e#3626#5789#0" expanded="true" />
-                <element signature="e#5788#5789#0" expanded="true" />
-                <element signature="e#4386#4387#0" expanded="true" />
+                <element signature="e#3725#4610#0" expanded="true" />
+                <element signature="e#3945#4493#0" expanded="true" />
+                <element signature="e#4492#4493#0" expanded="true" />
+                <element signature="e#4609#4610#0" expanded="true" />
+                <element signature="e#4594#7393#0" expanded="true" />
+                <element signature="e#4814#7276#0" expanded="true" />
+                <element signature="e#7275#7276#0" expanded="true" />
+                <element signature="e#7392#7393#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="246" lean-forward="true" selection-start-line="246" selection-end-line="246" />
+            <state relative-caret-position="275">
+              <caret line="478" column="36" selection-start-line="478" selection-start-column="30" selection-end-line="478" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#16966#16967#0" expanded="true" />
+                <element signature="e#16996#16997#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -121,10 +124,10 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-          <provider selected="true" editor-type-id="android-designer2" />
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="108" column="43" selection-start-line="108" selection-start-column="43" selection-end-line="108" selection-end-column="43" />
+          <provider editor-type-id="android-designer2" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-833">
+              <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -153,8 +156,9 @@
       <find>waypoint</find>
       <find>getLat</find>
       <find>update</find>
-      <find>statusText</find>
       <find>start</find>
+      <find>Service already</find>
+      <find>statusText</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -408,7 +412,7 @@
       <window_info anchor="bottom" id="Run" order="4" sideWeight="0.49614576" weight="0.32885906" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5073581" side_tool="true" weight="0.32885906" />
       <window_info anchor="bottom" id="Version Control" order="6" sideWeight="0.49894884" weight="0.32885906" />
-      <window_info active="true" anchor="bottom" id="Build" order="7" sideWeight="0.7498248" visible="true" weight="0.3181208" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.7498248" weight="0.3181208" />
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.7210932" weight="0.32885906" />
       <window_info anchor="bottom" id="Find" order="9" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
@@ -619,14 +623,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="108" column="43" selection-start-line="108" selection-start-column="43" selection-end-line="108" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/LocationTrackService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
@@ -634,29 +630,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="69" selection-start-line="69" selection-end-line="69" />
-          <folding>
-            <element signature="e#3064#3851#0" expanded="true" />
-            <element signature="e#3011#3432#0" expanded="true" />
-            <element signature="e#3431#3432#0" expanded="true" />
-            <element signature="e#3850#3851#0" expanded="true" />
-            <element signature="e#3406#4387#0" expanded="true" />
-            <element signature="e#3626#5789#0" expanded="true" />
-            <element signature="e#5788#5789#0" expanded="true" />
-            <element signature="e#4386#4387#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-833">
+          <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/SocketService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="246" lean-forward="true" selection-start-line="246" selection-end-line="246" />
+        <state relative-caret-position="275">
+          <caret line="478" column="36" selection-start-line="478" selection-start-column="30" selection-end-line="478" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#16966#16967#0" expanded="true" />
+            <element signature="e#16996#16997#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/socketservice/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="431">
+          <caret line="251" column="92" lean-forward="true" selection-start-line="251" selection-start-column="92" selection-end-line="251" selection-end-column="92" />
+          <folding>
+            <element signature="e#3725#4610#0" expanded="true" />
+            <element signature="e#3945#4493#0" expanded="true" />
+            <element signature="e#4492#4493#0" expanded="true" />
+            <element signature="e#4609#4610#0" expanded="true" />
+            <element signature="e#4594#7393#0" expanded="true" />
+            <element signature="e#4814#7276#0" expanded="true" />
+            <element signature="e#7275#7276#0" expanded="true" />
+            <element signature="e#7392#7393#0" expanded="true" />
           </folding>
         </state>
       </provider>

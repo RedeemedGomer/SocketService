@@ -129,6 +129,7 @@
         android:background="#51EDEDED"
         android:scrollbars="vertical"
         android:textStyle="bold"
+        android:gravity="bottom"
         app:layout_constraintBottom_toTopOf="@+id/selectDestList2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

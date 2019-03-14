@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         socketServiceIntent = new Intent(this, SocketService.class);
 
-        statusTv.setText("ready to connect"); //initial
-
+        //use this string to test scrolling
+        //debugTv.setText("This example show how to make a TextView auto scroll down to display bottom of text. In the demonstration, the upper TextView is normal, user cannot see the bottom of text if it is full. The lower one, the TextView will auto scroll down, such that user can see the new added text.This example show how to make a TextView auto scroll down to display bottom of text. In the demonstration, the upper TextView is normal, user cannot see the bottom of text if it is full. The lower one, the TextView will auto scroll down, such that user can see the new added text.This example show how to make a TextView auto scroll down to display bottom of text. In the demonstration, the upper TextView is normal, user cannot see the bottom of text if it is full. The lower one, the TextView will auto scroll down, such that user can see the new added text.ffffffffffffffffff");
 
 
 
@@ -84,7 +84,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 updateGpsTextView();
                                 updateDebugTextView();
                                 if (socketService != null) {
-                                    updateStatusTextView(socketService.getStatusText());
+                                    if (!socketService.getStatusText().equals("")) {
+                                        updateStatusTextView(socketService.getStatusText());
+                                    } else {
+                                        socketService.setStatusText(statusTv.getText().toString());
+                                    }
                                 }
                             }
                         });
@@ -142,7 +146,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     }
 
                                 } else{ //no socket so only connect enabled and colored
-                                    startUpButtonConfig();
+                                    statusTv.setText("ready to connect");
+                                    startUpUIConfig();
                                 }
                             }
                         });
@@ -216,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //TODO - set status to
                 //statusTv.setText("Ready to Connect"); //overwrite status in socket service if needed
+                startUpUIConfig();
 
                 break;
             case R.id.emergancyLandButton:
@@ -299,10 +305,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         if(isServiceStarted) {
             if (isServiceBound) {
-                debugTv.setText("Service already Bound");
+                debugTv.append("Service already Bound");
             } else {
                 bindService();
-                debugTv.setText("Service wasn't bound, bounding initiated, check again");
+                debugTv.append("Service wasn't bound, bounding initiated, check again");
             }
         } else{
             startService(socketServiceIntent);
@@ -311,10 +317,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //have socket set disable/enable ^^ ?? I think when we get there yes. have stage 1 2 3 etc with lists of what to enable/disable
+
     private void disableConnectBtn () {
         initialBtn.setEnabled(false);
-        initialBtn.setBackgroundColor(0x51ededed); //51EDEDED
+        initialBtn.setBackgroundColor(0x51ededed);
     }
 
     private void enableConnectBtn (){
@@ -368,8 +374,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void startUpButtonConfig(){
-        initialBtn.setEnabled(true);
+    private void startUpUIConfig(){
+         initialBtn.setEnabled(true);
         initialBtn.setBackgroundColor(0xffe6caf2);
 
         startBtn.setEnabled(false);

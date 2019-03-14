@@ -60,7 +60,7 @@ public class SocketService extends Service {
     private String debugMessages = "";
 
     //stage varibles for buttons + UI output
-    private int stage = 0;
+    private int stage = -1;
 
     public IBinder onBind(Intent intent) {
         System.out.println("I am in Ibinder onBind method");
@@ -291,10 +291,8 @@ public class SocketService extends Service {
 
 
             SystemClock.sleep(2000);
-            //TODO - Button functionality
-            //active buttons: no active buttons
             stage = 4;
-            //popup: "The communication between app and drone has been correctly disconnected. Please close the app."
+            statusText = "ready to connect;";
             resetButtons();
             serverSays = debugMessages;
             runDone = true;
@@ -477,6 +475,10 @@ public class SocketService extends Service {
     public int getCommStage(){return stage;}
 
     public String getStatusText(){ return statusText;}
+
+    public void setStatusText(String s) {
+        statusText = s;
+    }
 
 
 
