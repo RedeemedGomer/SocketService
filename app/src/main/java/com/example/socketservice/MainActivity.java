@@ -1,10 +1,12 @@
 package com.example.socketservice;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -159,6 +161,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         threadCheckCommStatus.start();
 
+        ActivityCompat.requestPermissions(this, new String[] {
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION },
+                1);
+
 
     }
 
@@ -213,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                     stopService(socketServiceIntent);
+                    isServiceBound = false;//--------------------------------------------------------------todo
                     isServiceStarted = false;
                     debugTv.append("Service stopped");
                 } else {
