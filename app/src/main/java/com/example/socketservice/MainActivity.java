@@ -116,30 +116,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     stage = socketService.getCommStage();
                                     switch (stage){
                                         case 1:
+                                            //selectDestList.setEnabled(true);
                                             disableConnectBtn();
                                             disableStartBtn();
                                             disableCancelBtn();
                                             disableDisconnectBtn();
                                             break;
                                         case 2:
+                                            //selectDestList.setEnabled(true);
                                             disableConnectBtn();
                                             enableStartBtn();
                                             disableCancelBtn();
                                             enableDisconnectBtn();
                                             break;
                                         case 3:
+                                            //selectDestList.setEnabled(false);
                                             disableConnectBtn();
                                             disableStartBtn();
                                             enableCancelBtn();
                                             disableDisconnectBtn();
                                             break;
                                         case 4:
+                                            //selectDestList.setEnabled(false);
                                             enableConnectBtn();
                                             disableStartBtn();
                                             disableCancelBtn();
                                             disableDisconnectBtn();
                                             break;
                                         default:
+                                            //selectDestList.setEnabled(true);
                                             enableConnectBtn();
                                             disableStartBtn();
                                             disableCancelBtn();

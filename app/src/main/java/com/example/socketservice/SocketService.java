@@ -33,7 +33,7 @@ import java.net.Socket;
 
 public class SocketService extends Service {
     //socket variables
-    public static final String SERVERIP = "10.13.68.144";
+    public static final String SERVERIP = "192.168.4.1";
     public static final int SERVERPORT = 8000;
     Socket socket = new Socket();
     private BufferedReader reader = null;
