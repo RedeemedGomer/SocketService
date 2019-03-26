@@ -37,7 +37,7 @@ public class LocationTrackService extends Service implements LocationListener {
 
 
 
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
 
 
     private static final long MIN_MILISECONDS_BW_UPDATES = 100;

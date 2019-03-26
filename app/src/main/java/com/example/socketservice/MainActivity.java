@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.disconnectButton:
                 socketService.setDisconnectButtonPressedButtonPressed(true);
-                
+
                 //disconnect service
                 if(isServiceBound) {
                     stopService(socketServiceIntent);
