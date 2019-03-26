@@ -49,9 +49,6 @@ public class SocketService extends Service {
     private double lat = 1234;
     private double lon = 5678;
 
-//    //GPS variables TODO GPS
-//    LocationTrackService locationTrackServe;
-//    LocationManager LocMan;
 
     //drone variables
     private double droneLat = -1;
@@ -100,7 +97,6 @@ public class SocketService extends Service {
     public int onStartCommand(Intent intent,int flags, int startId){
         super.onStartCommand(intent, flags, startId);
 
-        //locationTrackServe = new LocationTrackService(getApplicationContext()); TODO  - GPS
         Log.i("S_update", "onStartCommand");
         Runnable connect = new connectSocket();
         new Thread(connect).start();
@@ -167,8 +163,8 @@ public class SocketService extends Service {
 //            droneVelocity = Float.valueOf(readMessageAndAck());
 //            droneHeading = Integer.valueOf(readMessageAndAck());
 //
-//            sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude())); //TODO - change to gps variable
-//            sendMessageGetAck(String.valueOf(locationTrackServe.getLongitude()));
+//            sendMessageGetAck(String.valueOf(phoneLat));
+//            sendMessageGetAck(String.valueOf(phoneLon));
 //            sendMessageGetAck(String.valueOf(startButtonPressed));
 //            sendMessageGetAck(String.valueOf(cancelButtonPressed));
 //            sendMessageGetAck(String.valueOf(emergStopButtonPressed));
@@ -220,9 +216,8 @@ public class SocketService extends Service {
                     boolean tempCancel = cancelButtonPressed;
 
 //                    sendMessageGetAck(String.valueOf(destWaypointNum));
-//                    //sendMessageGetAck(String.valueOf(startWaypointNum)); //start waypoint #
-//                    sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude())); //TODO - change to gps variable
-//                    sendMessageGetAck(String.valueOf(locationTrackServe.getLongitude()));
+//                    sendMessageGetAck(String.valueOf(phoneLat));
+//                    sendMessageGetAck(String.valueOf(phoneLon));
 //                    sendMessageGetAck(String.valueOf(tempCancel));
 
                     if (tempCancel) {

@@ -18,6 +18,7 @@ import android.util.Log;
 
 /**
  * Created by anupamchugh on 28/11/16.
+ * downloaded from : ____________
  */
 
 public class LocationTrackService extends Service implements LocationListener {
@@ -31,8 +32,8 @@ public class LocationTrackService extends Service implements LocationListener {
     boolean canGetLocation = false;
 
     Location loc;
-    double latitude = -1110;
-    double longitude = -1110;
+    double latitude = 0;
+    double longitude = 0;
 
 
 
@@ -93,8 +94,8 @@ public class LocationTrackService extends Service implements LocationListener {
                                 MIN_MILISECONDS_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         if (locationManager != null) {
-                            loc = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                            loc = locationManager
+//                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (loc != null) {
                                 latitude = loc.getLatitude();
                                 longitude = loc.getLongitude();

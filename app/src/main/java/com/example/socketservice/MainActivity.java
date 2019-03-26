@@ -248,26 +248,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateGps(){
-        //TODO redo to get gps from locale instead of socketservice
-
         gpsTvLat.setText(String.valueOf(getLat()));
         gpsTvLon.setText(String.valueOf(getLon()));
 
 
         if (isServiceBound){
-            //socketService.setPhoneLat();
-            //socketService.setPhoneLon();
+            socketService.setPhoneLat(getLat());
+            socketService.setPhoneLon(getLon());
         }
 
 
-//        if(isServiceBound){
-//            gpsTvLat.setText(socketService.getLatString());
-//            gpsTvLon.setText(socketService.getLonString());
-//
-//        }else{
-//            gpsTvLat.setText("-");
-//            gpsTvLon.setText("-");
-//        }
     }
 
 //    private void updateDebugTextView() {
@@ -317,8 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.disconnectButton:
                 socketService.setDisconnectButtonPressedButtonPressed(true);
-                stage = 4; //TODO get rid of this stage made????.
-
+                
                 //disconnect service
                 if(isServiceBound) {
                     stopService(socketServiceIntent);
@@ -499,35 +488,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     ////////////////////GPS METHODS//////////////////////////////
-//    public String getLatLonString(){
-//        Log.i("S_update", "in getLatLon()");
-//        if(locationTrackServe != null) {
-//            return "Lat:" + locationTrackServe.getLatitude() + ",  Lon:" + locationTrackServe.getLongitude();
-//        }else{
-//            Log.d("S_debug", "LocationTrackServe was null");
-//            return "Error LocationTracker is Null";
-//        }
-//    }
-//
-//    public String getLatString(){
-//        Log.i("S_update", "in getLatString()");
-//        if(locationTrackServe != null) {
-//            return String.valueOf(locationTrackServe.getLatitude());
-//        }else{
-//            Log.d("S_debug", "LocationTrackServe was null");
-//            return "Error LocationTracker is Null";
-//        }
-//    }
-//
-//    public String getLonString(){
-//        Log.i("S_update", "in getLonString()");
-//        if(locationTrackServe != null) {
-//            return String.valueOf(locationTrackServe.getLongitude());
-//        }else{
-//            Log.d("S_debug", "LocationTrackServe was null");
-//            return "Error LocationTracker is Null";
-//        }
-//    }
 
 
     public double getLat(){
