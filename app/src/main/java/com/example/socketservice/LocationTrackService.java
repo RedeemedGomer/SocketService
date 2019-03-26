@@ -39,7 +39,7 @@ public class LocationTrackService extends Service implements LocationListener {
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
 
 
-    private static final long MIN_MILISECONDS_BW_UPDATES = 500;//1000 * 60 * 1//todo make sure this is short enough
+    private static final long MIN_MILISECONDS_BW_UPDATES = 100;
     private LocationManager locationManager;
 
     public LocationTrackService(Context newContext) {
