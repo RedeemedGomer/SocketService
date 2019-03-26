@@ -9,13 +9,15 @@ import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -23,16 +25,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Boolean isServiceBound = false;
     private ServiceConnection socketServiceConnection;
     private Intent socketServiceIntent;
-    private Boolean runDone;
     private Boolean isServiceStarted = false;
-    private static int waypoint = -1;
     private int stage = 0;
+    //private boolean showInstr = false;
+    private boolean stage2InstrShown = false;
+    private boolean stage3InstrShown = false;
+    private boolean stage4InstrShown = false;
 
 
     //local gui variables
-    private Button startBtn, cancelBtn, initialBtn, disconnectBtn;// initializeButton;
-    private Spinner selectDestList, selectStartList;
-    private TextView debugTv, gpsTv, statusTv;
+    private Button startBtn, cancelBtn, connectBtn, disconnectBtn;
+    private Spinner selectDestList;
+    private TextView gpsTvLat, gpsTvLon, statusTv, destLabelTv, droneLatTv, droneLonTv, droneAltTv, droneVelTv, droneHeadTv, instrLabel, chosenDestTv;
+    private Switch instrSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,36 +47,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //initialize local gui vars
         startBtn = (Button) findViewById(R.id.startButton);
         cancelBtn = (Button)  findViewById(R.id.cancelButton);
-        initialBtn = (Button)  findViewById(R.id.intitializeButton);
+        connectBtn = (Button)  findViewById(R.id.connectButton);
         disconnectBtn = (Button) findViewById(R.id.disconnectButton);
-        //initializeButton = (Button) findViewById(R.id.initializeButton);
-        debugTv = (TextView) findViewById(R.id.debugTextView);
-        debugTv.setMovementMethod(new ScrollingMovementMethod());
-        gpsTv = (TextView)findViewById(R.id.gps_ui_output);
-        statusTv = (TextView) findViewById(R.id.statusText);
         selectDestList = (Spinner) findViewById(R.id.selectDestList);
-        selectStartList = (Spinner) findViewById(R.id.selectDestList2);
+        instrSwitch = (Switch) findViewById(R.id.instrSwitch);
+        instrLabel = (TextView) findViewById(R.id.instrLabelText);
+        gpsTvLat = (TextView)findViewById(R.id.latTextPh);
+        gpsTvLon = (TextView)findViewById(R.id.lonTextPh);
+        statusTv = (TextView) findViewById(R.id.statusText);
+        destLabelTv = (TextView) findViewById(R.id.destLabel);
+        droneLatTv = (TextView) findViewById(R.id.droneLatText);
+        droneLonTv = (TextView) findViewById(R.id.droneLonText);
+        droneAltTv = (TextView) findViewById(R.id.droneAltText);
+        droneVelTv = (TextView) findViewById(R.id.droneVelText);
+        droneHeadTv = (TextView) findViewById(R.id.droneHeadText);
+        chosenDestTv = (TextView) findViewById(R.id.chosenDestTextView);
 
         //set up spinner-dropdown menu
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.destListArray, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectDestList.setAdapter(adapter);
-        selectStartList.setAdapter(adapter);
-
 
         //send all onClicks to local switch statement
         startBtn.setOnClickListener(this);
         cancelBtn.setOnClickListener(this);
-        initialBtn.setOnClickListener(this);
+        connectBtn.setOnClickListener(this);
         disconnectBtn.setOnClickListener(this);
 
+        //set up switch
+        instrSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    instrLabel.setText("ON");
+
+                } else {
+                    instrLabel.setText("OFF");
+
+                }
+            }
+        });
+
         socketServiceIntent = new Intent(this, SocketService.class);
-
-        //use this string to test scrolling
-        //debugTv.setText("This example show how to make a TextView auto scroll down to display bottom of text. In the demonstration, the upper TextView is normal, user cannot see the bottom of text if it is full. The lower one, the TextView will auto scroll down, such that user can see the new added text.This example show how to make a TextView auto scroll down to display bottom of text. In the demonstration, the upper TextView is normal, user cannot see the bottom of text if it is full. The lower one, the TextView will auto scroll down, such that user can see the new added text.This example show how to make a TextView auto scroll down to display bottom of text. In the demonstration, the upper TextView is normal, user cannot see the bottom of text if it is full. The lower one, the TextView will auto scroll down, such that user can see the new added text.ffffffffffffffffff");
-
-
 
         Thread threadUpdateTextViews = new Thread() {
 
@@ -83,13 +100,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                updateGpsTextView();
-                                updateDebugTextView();
+                                updateGpsTextViews();
+                                //updateDebugTextView();
                                 if (socketService != null) {
                                     if (!socketService.getStatusText().equals("")) {
                                         updateStatusTextView(socketService.getStatusText());
-                                    } else {
-                                        socketService.setStatusText(statusTv.getText().toString());
+                                        updateDroneDataTextViews();
+                                        socketService.setInstrSwitchValue(Boolean.valueOf(instrSwitch.isChecked()));
                                     }
                                 }
                             }
@@ -116,45 +133,89 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     stage = socketService.getCommStage();
                                     switch (stage){
                                         case 1:
-                                            //selectDestList.setEnabled(true);
+                                            //Toast.makeText(getApplicationContext(), String.valueOf(showInstr), Toast.LENGTH_SHORT).show();
+                                            stage2InstrShown = false;
+                                            stage3InstrShown= false;
+                                            stage4InstrShown = false;
+
+                                            enableDestSelect();
                                             disableConnectBtn();
                                             disableStartBtn();
                                             disableCancelBtn();
                                             disableDisconnectBtn();
                                             break;
                                         case 2:
-                                            //selectDestList.setEnabled(true);
+                                            //Toast.makeText(getApplicationContext(), String.valueOf(showInstr), Toast.LENGTH_SHORT).show();
+                                            if (instrSwitch.isChecked() && !stage2InstrShown) {
+                                                Toast.makeText(getApplicationContext(), "Choose a destination. When your ready to go press the Start button.", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getApplicationContext(), "If you are finished using the app or wish to stop phone/drone communication press the Disconnect button.", Toast.LENGTH_LONG).show();
+                                                stage2InstrShown = true;
+                                            }
+                                            stage3InstrShown= false;
+                                            stage4InstrShown = false;
+
+                                            enableDestSelect();
                                             disableConnectBtn();
                                             enableStartBtn();
                                             disableCancelBtn();
                                             enableDisconnectBtn();
                                             break;
                                         case 3:
-                                            //selectDestList.setEnabled(false);
+                                            //Toast.makeText(getApplicationContext(), String.valueOf(showInstr), Toast.LENGTH_SHORT).show();
+                                            if (instrSwitch.isChecked() && !stage3InstrShown){ //TODO this shows up for forever
+                                                Toast.makeText(getApplicationContext(),"Follow the drone to reach your destination. If the drone gets to far ahead it will stop and wait for you.",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getApplicationContext(),"If you wish to cancel the journey at any time press the Cancel button and the drone will land in a few moments.",Toast.LENGTH_LONG).show();
+                                                stage3InstrShown = true;
+                                            }
+                                            stage2InstrShown = false;
+                                            stage4InstrShown = false;
+
+                                            disableDestSelect();
                                             disableConnectBtn();
                                             disableStartBtn();
                                             enableCancelBtn();
                                             disableDisconnectBtn();
                                             break;
                                         case 4:
-                                            //selectDestList.setEnabled(false);
+                                            //Toast.makeText(getApplicationContext(), String.valueOf(showInstr), Toast.LENGTH_SHORT).show();
+                                            if (instrSwitch.isChecked() && !stage4InstrShown){
+                                                Toast.makeText(getApplicationContext(),"You may now safely close the app.",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getApplicationContext(),"If you wish to go somewhere else, press the Connect button to begin the process again.",Toast.LENGTH_LONG).show();
+                                                stage4InstrShown = true;
+                                            }
+                                            stage2InstrShown = false;
+                                            stage3InstrShown= false;
+
+                                            enableDestSelect();
                                             enableConnectBtn();
                                             disableStartBtn();
                                             disableCancelBtn();
                                             disableDisconnectBtn();
                                             break;
+                                        case 5: //ERROR, only happens when socket disconnects
+                                            Toast.makeText(getApplicationContext(),"Error: app/drone communication ceased. Socket disconnect.",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getApplicationContext(),"Either phone out of communication range or remote override used.",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getApplicationContext(),"App is now ready to try to re-establish communication with the drone. Press the Connect button.",Toast.LENGTH_LONG).show();
+                                            break;
                                         default:
-                                            //selectDestList.setEnabled(true);
+                                            //Toast.makeText(getApplicationContext(), String.valueOf(showInstr), Toast.LENGTH_SHORT).show();
+                                            stage2InstrShown = false;
+                                            stage3InstrShown= false;
+                                            stage4InstrShown = false;
+
+                                            enableDestSelect();
                                             enableConnectBtn();
                                             disableStartBtn();
                                             disableCancelBtn();
                                             disableDisconnectBtn();
                                             break;
                                     }
-
-                                } else{ //no socket so only connect enabled and colored
+                                } else{
+                                    //Toast.makeText(getApplicationContext(), String.valueOf(showInstr), Toast.LENGTH_SHORT).show();
+                                    clearDroneDataTextView();
                                     statusTv.setText("ready to connect");
                                     startUpUIConfig();
+                                    enableDestSelect();
                                 }
                             }
                         });
@@ -172,22 +233,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 1);
 
 
+
+
+        Toast.makeText(getApplicationContext(),"To get started Press the Connect button to initiate app/drone communication.",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"You can stop receiving instructions at any time by turning the switch off in the top right of the app.",Toast.LENGTH_LONG).show();
+        //"To get started Press the Connect button to initiate app/drone communication."
+        // "You can stop receiving instructions at any time by turning the switch off in the top right of the app."
+
     }
 
-    private void updateGpsTextView(){
+    private void updateGpsTextViews(){
         if(isServiceBound){
-            gpsTv.setText(socketService.getLatLonString());
+            gpsTvLat.setText(socketService.getLatString());
+            gpsTvLon.setText(socketService.getLonString());
+
         }else{
-            gpsTv.setText("GPS: None Available");
+            gpsTvLat.setText("-");
+            gpsTvLon.setText("-");
         }
     }
 
-    private void updateDebugTextView() {
-        if (isServiceBound){
-            debugTv.append(socketService.getDebugMesseges());
-            socketService.resetDebugMessages();
-        }
-    }
+//    private void updateDebugTextView() {
+//        if (isServiceBound){
+//            debugTv.append(socketService.getDebugMesseges());
+//            socketService.resetDebugMessages();
+//        }
+//    }
 
     private void updateStatusTextView(String s){
         if (isServiceBound){
@@ -195,10 +266,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void updateDroneDataTextViews(){
+        droneAltTv.setText(String.valueOf(socketService.getDroneAlt()));
+        droneLatTv.setText(String.valueOf(socketService.getDroneLat()));
+        droneLonTv.setText(String.valueOf(socketService.getDroneLon()));
+        droneVelTv.setText(String.valueOf(socketService.getDroneVel()));
+        droneHeadTv.setText(String.valueOf(socketService.getDroneHead()));
+    }
+
+    private void clearDroneDataTextView(){
+        droneAltTv.setText("-");
+        droneLatTv.setText("-");
+        droneLonTv.setText("-");
+        droneVelTv.setText("-");
+        droneHeadTv.setText("-");
+    }
+
     @Override
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.intitializeButton: //TODO - Connect Button.
+            case R.id.connectButton:
                 startConnection();
                 break;
 
@@ -213,32 +300,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.disconnectButton:
                 socketService.setDisconnectButtonPressedButtonPressed(true);
-                stage = 4;
-                //disconnect service stuff
+                stage = 4; //TODO get rid of this stage made????.
+
+                //disconnect service
                 if(isServiceBound) {
-                    if(socketService.getRunDone()){
-                        String Message = socketService.serverSaysWhat();
-                        if(Message != null) {
-                            debugTv.append("Server Says" + Message);
-                        }else{
-                            debugTv.append("Server Say Null");
-                        }
-                    }
                     stopService(socketServiceIntent);
-                    isServiceBound = false;//--------------------------------------------------------------todo
+                    isServiceBound = false;
                     isServiceStarted = false;
-                    debugTv.append("Service stopped");
+                    //debugTv.append("Service stopped");
                 } else {
-                    debugTv.append("disconnect:Service Not Bound");
+                    //debugTv.append("disconnect:Service Not Bound");
                 }
 
-                //TODO - set status to
-                //statusTv.setText("Ready to Connect"); //overwrite status in socket service if needed
                 startUpUIConfig();
-
                 break;
-            case R.id.emergancyLandButton:
-                socketService.setEmergStopButtonPressed(true);
         }
 
     }
@@ -273,56 +348,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getWaypointFromDropDown(){
-        //dest waypoint
         String destName = selectDestList.getSelectedItem().toString();
+
         if (destName.equals("(SSC) Stevens Student Center")){
+
             socketService.setDestWaypointNum(0);
-            //debugTextView.append("\n SSC");
+
         }else if (destName.equals("(DMC) Dixon Ministry Center")){
+
             socketService.setDestWaypointNum(9);
-            //debugTextView.append("\n DMC");
+
         }else if (destName.equals("(BTS) Center for Biblical and Theological Studies")){
+
             socketService.setDestWaypointNum(11);
-            //debugTextView.append("\n BTS");
+
         }else if (destName.equals("(ENS) Engineering and Science Center")){
+
             socketService.setDestWaypointNum(22);
-            //debugTextView.append("\n ENS");
+
         }else if (destName.equals("(HSC) Health and Science Center")){
+
             socketService.setDestWaypointNum(28);
-            //debugTextView.append("\n HSC");
+
         }
-
-
-//        //start waypoint
-//        String startName = selectStartList.getSelectedItem().toString();
-//        if (startName.equals("(SSC) Stevens Student Center")){
-//            socketService.setStartWaypointNum(0);
-//            //debugTextView.append("\n SSC");
-//        }else if (startName.equals("(DMC) Dixon Ministry Center")){
-//            socketService.setStartWaypointNum(9);
-//            //debugTextView.append("\n DMC");
-//        }else if (startName.equals("(BTS) Center for Biblical and Theological Studies")){
-//            socketService.setStartWaypointNum(11);
-//            //debugTextView.append("\n BTS");
-//        }else if (startName.equals("(ENS) Engineering and Science Center")){
-//            socketService.setStartWaypointNum(22);
-//            //debugTextView.append("\n ENS");
-//        }else if (startName.equals("(HSC) Health and Science Center")){
-//            socketService.setStartWaypointNum(28);
-//            //debugTextView.append("\n HSC");
-//        }
 
     }
 
     private void startConnection(){
         //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         if(isServiceStarted) {
-            if (isServiceBound) {
-                debugTv.append("Service already Bound");
-            } else {
-                bindService();
-                debugTv.append("Service wasn't bound, bounding initiated, check again");
-            }
+//            if (isServiceBound) {
+//                debugTv.append("Service already Bound");
+//            } else {
+//                bindService();
+//                debugTv.append("Service wasn't bound, bounding initiated, check again");
+//            }
         } else{
             startService(socketServiceIntent);
             bindService();
@@ -332,16 +392,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void disableConnectBtn () {
-        initialBtn.setEnabled(false);
-        initialBtn.setBackgroundColor(0x51ededed);
+        connectBtn.setEnabled(false);
+        connectBtn.setBackgroundColor(0x51ededed);
     }
 
     private void enableConnectBtn (){
-        initialBtn.setEnabled(true);
-        if (!socketService.getInitialButtonPressed()) {
-            initialBtn.setBackgroundColor(0xffe6caf2);
+        connectBtn.setEnabled(true);
+        if (!socketService.getConnectButtonPressed()) {
+            connectBtn.setBackgroundColor(0xfff2cae8); //new: 0xfff2cae8, old: 0xffe6caf2
         } else {
-            initialBtn.setBackgroundColor(0xaae3d1eb);
+            connectBtn.setBackgroundColor(0xaaebd1e4); //new: 0xaaebd1e4, old: 0xaae3d1eb
         }
     }
 
@@ -388,8 +448,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startUpUIConfig(){
-         initialBtn.setEnabled(true);
-        initialBtn.setBackgroundColor(0xffe6caf2);
+        statusTv.setText("ready to connect");
+
+        clearDroneDataTextView();
+
+        connectBtn.setEnabled(true);
+        connectBtn.setBackgroundColor(0xfff2cae8);
 
         startBtn.setEnabled(false);
         startBtn.setBackgroundColor(0x51ededed);
@@ -399,6 +463,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         disconnectBtn.setEnabled(false);
         disconnectBtn.setBackgroundColor(0x51ededed);
+    }
+
+    private void enableDestSelect(){
+        selectDestList.setEnabled(true);
+        destLabelTv.setText("Choose your destination:");
+        selectDestList.setVisibility(View.VISIBLE);
+        chosenDestTv.setVisibility(View.GONE);
+    }
+
+    private void disableDestSelect(){
+        selectDestList.setEnabled(false);
+        destLabelTv.setText("Your destination is:");
+        selectDestList.setVisibility(View.INVISIBLE);
+        chosenDestTv.setVisibility(View.VISIBLE);
+        chosenDestTv.setText(selectDestList.getSelectedItem().toString());
+
     }
 
 }
