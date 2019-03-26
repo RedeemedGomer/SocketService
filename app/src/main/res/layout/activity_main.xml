@@ -20,6 +20,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="Pop Up Intructions:"
+        app:layout_constraintBottom_toBottomOf="@+id/instrSwitch"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/instrLabelText"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center"
+        android:text="ON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/instrSwitch"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <Switch
         android:id="@+id/instrSwitch"
         android:layout_width="wrap_content"
@@ -58,6 +82,21 @@
         android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/destLabel" />
+
+    <TextView
+        android:id="@+id/chosenDestTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:text="Destination"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/destLabel" />
 
@@ -312,44 +351,5 @@
         android:text="-"
         app:layout_constraintStart_toEndOf="@+id/velLabel"
         app:layout_constraintTop_toTopOf="@+id/velLabel" />
-
-    <TextView
-        android:id="@+id/instrLabelText"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center"
-        android:text="ON"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/instrSwitch"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="Pop Up Intructions:"
-        app:layout_constraintBottom_toBottomOf="@+id/instrSwitch"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/chosenDestTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:gravity="center"
-        android:text="Destination"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/destLabel" />
 
 </android.support.constraint.ConstraintLayout>

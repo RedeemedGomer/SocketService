@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.LocationManager;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Spinner selectDestList;
     private TextView gpsTvLat, gpsTvLon, statusTv, destLabelTv, droneLatTv, droneLonTv, droneAltTv, droneVelTv, droneHeadTv, instrLabel, chosenDestTv;
     private Switch instrSwitch;
+
+    //GPS variables
+    LocationTrackService locationTrackServe;
+    LocationManager LocMan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                updateGpsTextViews();
+                                updateGps();
                                 //updateDebugTextView();
                                 if (socketService != null) {
                                     if (!socketService.getStatusText().equals("")) {
@@ -162,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             break;
                                         case 3:
                                             //Toast.makeText(getApplicationContext(), String.valueOf(showInstr), Toast.LENGTH_SHORT).show();
-                                            if (instrSwitch.isChecked() && !stage3InstrShown){ //TODO this shows up for forever
+                                            if (instrSwitch.isChecked() && !stage3InstrShown){
                                                 Toast.makeText(getApplicationContext(),"Follow the drone to reach your destination. If the drone gets to far ahead it will stop and wait for you.",Toast.LENGTH_LONG).show();
                                                 Toast.makeText(getApplicationContext(),"If you wish to cancel the journey at any time press the Cancel button and the drone will land in a few moments.",Toast.LENGTH_LONG).show();
                                                 stage3InstrShown = true;
@@ -232,8 +237,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Manifest.permission.ACCESS_COARSE_LOCATION },
                 1);
 
-
-
+        //start GPS
+        locationTrackServe = new LocationTrackService(getApplicationContext());
 
         Toast.makeText(getApplicationContext(),"To get started Press the Connect button to initiate app/drone communication.",Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(),"You can stop receiving instructions at any time by turning the switch off in the top right of the app.",Toast.LENGTH_LONG).show();
@@ -242,15 +247,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void updateGpsTextViews(){
-        if(isServiceBound){
-            gpsTvLat.setText(socketService.getLatString());
-            gpsTvLon.setText(socketService.getLonString());
+    private void updateGps(){
+        //TODO redo to get gps from locale instead of socketservice
 
-        }else{
-            gpsTvLat.setText("-");
-            gpsTvLon.setText("-");
+        gpsTvLat.setText(String.valueOf(getLat()));
+        gpsTvLon.setText(String.valueOf(getLon()));
+
+
+        if (isServiceBound){
+            //socketService.setPhoneLat();
+            //socketService.setPhoneLon();
         }
+
+
+//        if(isServiceBound){
+//            gpsTvLat.setText(socketService.getLatString());
+//            gpsTvLon.setText(socketService.getLonString());
+//
+//        }else{
+//            gpsTvLat.setText("-");
+//            gpsTvLon.setText("-");
+//        }
     }
 
 //    private void updateDebugTextView() {
@@ -479,6 +496,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         chosenDestTv.setVisibility(View.VISIBLE);
         chosenDestTv.setText(selectDestList.getSelectedItem().toString());
 
+    }
+
+    ////////////////////GPS METHODS//////////////////////////////
+//    public String getLatLonString(){
+//        Log.i("S_update", "in getLatLon()");
+//        if(locationTrackServe != null) {
+//            return "Lat:" + locationTrackServe.getLatitude() + ",  Lon:" + locationTrackServe.getLongitude();
+//        }else{
+//            Log.d("S_debug", "LocationTrackServe was null");
+//            return "Error LocationTracker is Null";
+//        }
+//    }
+//
+//    public String getLatString(){
+//        Log.i("S_update", "in getLatString()");
+//        if(locationTrackServe != null) {
+//            return String.valueOf(locationTrackServe.getLatitude());
+//        }else{
+//            Log.d("S_debug", "LocationTrackServe was null");
+//            return "Error LocationTracker is Null";
+//        }
+//    }
+//
+//    public String getLonString(){
+//        Log.i("S_update", "in getLonString()");
+//        if(locationTrackServe != null) {
+//            return String.valueOf(locationTrackServe.getLongitude());
+//        }else{
+//            Log.d("S_debug", "LocationTrackServe was null");
+//            return "Error LocationTracker is Null";
+//        }
+//    }
+
+
+    public double getLat(){
+        if(locationTrackServe != null){
+            return locationTrackServe.getLatitude();
+        } else{
+            Log.d("S_debug", "LocationTrackServe was null");
+            return 0;
+        }
+    }
+
+    public double getLon(){
+        if(locationTrackServe != null){
+            return locationTrackServe.getLongitude();
+        } else{
+            Log.d("S_debug", "LocationTrackServe was null");
+            return 0;
+        }
     }
 
 }

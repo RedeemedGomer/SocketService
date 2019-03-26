@@ -49,9 +49,9 @@ public class SocketService extends Service {
     private double lat = 1234;
     private double lon = 5678;
 
-    //GPS variables
-    LocationTrackService locationTrackServe;
-    LocationManager LocMan;
+//    //GPS variables TODO GPS
+//    LocationTrackService locationTrackServe;
+//    LocationManager LocMan;
 
     //drone variables
     private double droneLat = -1;
@@ -65,11 +65,13 @@ public class SocketService extends Service {
     private boolean startButtonPressed = false;
     private boolean  cancelButtonPressed = false;
     private boolean disconnectButtonPressed = false;
-    private boolean emergStopButtonPressed = false;
-    private String socketMessage = "";
+    //private boolean emergStopButtonPressed = false;
+    //private String socketMessage = "";
     private String statusText = "ready to connect";
     private String debugMessages = "";
-    private String instrMessage = "";
+    //private String instrMessage = "";
+    private double phoneLat = -1;
+    private double phoneLon = -1;
 
     //stage varibles for buttons + UI output
     private int stage = -1;
@@ -98,7 +100,7 @@ public class SocketService extends Service {
     public int onStartCommand(Intent intent,int flags, int startId){
         super.onStartCommand(intent, flags, startId);
 
-        locationTrackServe = new LocationTrackService(getApplicationContext());
+        //locationTrackServe = new LocationTrackService(getApplicationContext()); TODO  - GPS
         Log.i("S_update", "onStartCommand");
         Runnable connect = new connectSocket();
         new Thread(connect).start();
@@ -165,7 +167,7 @@ public class SocketService extends Service {
 //            droneVelocity = Float.valueOf(readMessageAndAck());
 //            droneHeading = Integer.valueOf(readMessageAndAck());
 //
-//            sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude()));
+//            sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude())); //TODO - change to gps variable
 //            sendMessageGetAck(String.valueOf(locationTrackServe.getLongitude()));
 //            sendMessageGetAck(String.valueOf(startButtonPressed));
 //            sendMessageGetAck(String.valueOf(cancelButtonPressed));
@@ -219,7 +221,7 @@ public class SocketService extends Service {
 
 //                    sendMessageGetAck(String.valueOf(destWaypointNum));
 //                    //sendMessageGetAck(String.valueOf(startWaypointNum)); //start waypoint #
-//                    sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude()));
+//                    sendMessageGetAck(String.valueOf(locationTrackServe.getLatitude())); //TODO - change to gps variable
 //                    sendMessageGetAck(String.valueOf(locationTrackServe.getLongitude()));
 //                    sendMessageGetAck(String.valueOf(tempCancel));
 
@@ -348,45 +350,45 @@ public class SocketService extends Service {
         }
     }
 
-    public String getLatLonString(){
-        Log.i("S_update", "in getLatLon()");
-        if(locationTrackServe != null) {
-            return "Lat:" + locationTrackServe.getLatitude() + ",  Lon:" + locationTrackServe.getLongitude();
-        }else{
-            Log.d("S_debug", "LocationTrackServe was null");
-            return "Error LocationTracker is Null";
-        }
-    }
-
-    public String getLatString(){
-        Log.i("S_update", "in getLatString()");
-        if(locationTrackServe != null) {
-            return String.valueOf(locationTrackServe.getLatitude());
-        }else{
-            Log.d("S_debug", "LocationTrackServe was null");
-            return "Error LocationTracker is Null";
-        }
-    }
-
-    public String getLonString(){
-        Log.i("S_update", "in getLonString()");
-        if(locationTrackServe != null) {
-            return String.valueOf(locationTrackServe.getLongitude());
-        }else{
-            Log.d("S_debug", "LocationTrackServe was null");
-            return "Error LocationTracker is Null";
-        }
-    }
-
-
-    public double getLat(){
-        if(locationTrackServe != null){
-            return locationTrackServe.getLatitude();
-        } else{
-            Log.d("S_debug", "LocationTrackServe was null");
-            return -1111;
-        }
-    }
+//    public String getLatLonString(){
+//        Log.i("S_update", "in getLatLon()");
+//        if(locationTrackServe != null) {
+//            return "Lat:" + locationTrackServe.getLatitude() + ",  Lon:" + locationTrackServe.getLongitude();
+//        }else{
+//            Log.d("S_debug", "LocationTrackServe was null");
+//            return "Error LocationTracker is Null";
+//        }
+//    }
+//
+//    public String getLatString(){
+//        Log.i("S_update", "in getLatString()");
+//        if(locationTrackServe != null) {
+//            return String.valueOf(locationTrackServe.getLatitude());
+//        }else{
+//            Log.d("S_debug", "LocationTrackServe was null");
+//            return "Error LocationTracker is Null";
+//        }
+//    }
+//
+//    public String getLonString(){
+//        Log.i("S_update", "in getLonString()");
+//        if(locationTrackServe != null) {
+//            return String.valueOf(locationTrackServe.getLongitude());
+//        }else{
+//            Log.d("S_debug", "LocationTrackServe was null");
+//            return "Error LocationTracker is Null";
+//        }
+//    }
+//
+//
+//    public double getLat(){
+//        if(locationTrackServe != null){
+//            return locationTrackServe.getLatitude();
+//        } else{
+//            Log.d("S_debug", "LocationTrackServe was null");
+//            return -1111;
+//        }
+//    }
 
     public Boolean getIsBound(){
         return isBound;
@@ -527,6 +529,13 @@ public class SocketService extends Service {
         showInstr = b;
     }
 
+    public void setPhoneLat (double d){
+        phoneLat = d;
+    }
+
+    public void setPhoneLon (double d){
+        phoneLon = d;
+    }
 
 
 }
